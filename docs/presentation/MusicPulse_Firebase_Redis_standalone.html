@@ -1,0 +1,2617 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <!-- Standalone export: no Vite development client required. -->
+
+    <meta charset="UTF-8">
+    <!-- viewport-fit=cover: without it iOS insets the page from the notch and
+         home-indicator areas and paints the gap with the body background, so the
+         editor visibly stops short of the screen edges. The app fills the screen
+         and positions its own chrome; it never needs the browser to pad it. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <!-- The editor UI is light-only. Declaring it opts out of Chrome-on-
+         Android's auto-darkening (which force-inverts pages and breaks form
+         controls) and keeps native <select>/<input> rendering light on
+         dark-mode phones. -->
+    <meta name="color-scheme" content="only light">
+    <meta name="generator" content="bento-slides">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='6' fill='%2316273E'/%3E%3Crect x='6' y='6' width='6' height='20' rx='2' fill='%235E7699'/%3E%3Crect x='14' y='6' width='12' height='9' rx='2' fill='%23FF9E8A'/%3E%3Crect x='14' y='17' width='12' height='9' rx='2' fill='%23F0EBE0'/%3E%3C/svg%3E">
+    <title>MusicPulse — Firebase &amp; Redis — bento/slides</title>
+    <!--
+      NOTICE — bento/slides
+      MIT License — © 2026 The Bento authors
+      Full license text: the LICENSE file in the source tree, or https://bento.page
+      Source & third-party notices: https://bento.page
+
+      This file also embeds the following open-source libraries, whose licenses
+      require that these notices accompany copies (every saved Bento document
+      carries this block):
+
+      reveal.js — Copyright (C) Hakim El Hattab and contributors — MIT License
+      moveable, selecto and their @daybrush/@scena/@egjs/@cfcs modules —
+        Copyright (c) Daybrush (Younkue Choi) — MIT License
+      Fraunces typeface — Copyright 2020 The Fraunces Project Authors
+        (github.com/undercasetype/Fraunces) — SIL Open Font License 1.1
+      Instrument Sans typeface — Copyright 2022 The Instrument Sans Project
+        Authors (github.com/Instrument/instrument-sans) — SIL Open Font
+        License 1.1 (openfontlicense.org). Both fonts are embedded as
+        document assets in decks that use them and remain under the OFL.
+
+      MIT License: Permission is hereby granted, free of charge, to any person
+      obtaining a copy of this software and associated documentation files (the
+      "Software"), to deal in the Software without restriction, including
+      without limitation the rights to use, copy, modify, merge, publish,
+      distribute, sublicense, and/or sell copies of the Software, and to permit
+      persons to whom the Software is furnished to do so, subject to the
+      following conditions: The above copyright notice and this permission
+      notice shall be included in all copies or substantial portions of the
+      Software. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+      EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+      MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+      IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+      CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+      TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+      SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    -->
+    <!--
+      Bento document data lives in the script block below. The runtime replaces its
+      contents on every save, so this one file is both the app and the document.
+      An empty block means "boot with the starter deck".
+    -->
+    <script type="application/bento+json" id="bento-doc">
+{"format":"bento/slides","version":1,"docId":"musicpulse-opera-1787216854067","title":"MusicPulse — Firebase & Redis","size":{"width":1600,"height":900},"theme":{"background":"#F7F3EA","color":"#14243A","accent":"#F28A70","fontFamily":"Segoe UI"},"present":{"slideNumber":true,"progress":true,"controls":false,"numberHidden":false},"slides":[{"id":"slide-10","background":"#0E223A","transition":"fade","elements":[{"id":"t-1","type":"text","x":90,"y":70,"w":900,"h":35,"rotation":0,"opacity":1,"html":"PROJET NOSQL • BIG DATA","fontSize":18,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-2","type":"text","x":90,"y":190,"w":920,"h":130,"rotation":0,"opacity":1,"html":"MusicPulse","fontSize":92,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-3","type":"text","x":95,"y":350,"w":770,"h":110,"rotation":0,"opacity":1,"html":"Firebase pour durer.\u003cbr>Redis pour accélérer.","fontSize":34,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-4","type":"text","x":95,"y":720,"w":900,"h":42,"rotation":0,"opacity":1,"html":"Philippe Maillot • Erwan Marchand • Evan Afonso","fontSize":22,"fontFamily":"Segoe UI","fontWeight":500,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-5","type":"shape","shape":"rect","x":1160,"y":205,"w":120,"h":400,"rotation":0,"opacity":1,"fill":"#6F88AD","stroke":"transparent","strokeWidth":0,"radius":16},{"id":"s-6","type":"shape","shape":"rect","x":1305,"y":205,"w":180,"h":170,"rotation":0,"opacity":1,"fill":"#F28A70","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"s-7","type":"shape","shape":"rect","x":1305,"y":400,"w":180,"h":205,"rotation":0,"opacity":1,"fill":"#F7F3EA","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-8","type":"text","x":1185,"y":315,"w":70,"h":70,"rotation":0,"opacity":1,"html":"F","fontSize":44,"fontFamily":"Segoe UI","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-9","type":"text","x":1355,"y":440,"w":80,"h":80,"rotation":0,"opacity":1,"html":"R","fontSize":48,"fontFamily":"Segoe UI","fontWeight":800,"color":"#14243A","align":"center","valign":"middle","lineHeight":1.15}],"notes":"Philippe\n\nBonjour, nous sommes Philippe Maillot, Erwan Marchand et Evan Afonso. MusicPulse illustre comment deux bases NoSQL différentes peuvent travailler ensemble : Firestore conserve les données, Redis accélère les usages temps réel."},{"id":"slide-23","background":"#F7F3EA","transition":"fade","elements":[{"id":"t-11","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"01 • PROBLÉMATIQUE","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-12","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#D8D1C5","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-13","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Un catalogue durable ne suffit pas à répondre vite.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-14","type":"text","x":95,"y":245,"w":1360,"h":70,"rotation":0,"opacity":1,"html":"Comment combiner persistance, sécurité et performance sans demander à une seule base de tout faire ?","fontSize":28,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-15","type":"shape","shape":"rect","x":95,"y":365,"w":650,"h":330,"rotation":0,"opacity":1,"fill":"#FFFFFF","stroke":"#E0D9CE","strokeWidth":2,"radius":24},{"id":"s-16","type":"shape","shape":"rect","x":815,"y":365,"w":650,"h":330,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":24},{"id":"t-17","type":"text","x":135,"y":405,"w":560,"h":35,"rotation":0,"opacity":1,"html":"FIRESTORE","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-18","type":"text","x":135,"y":460,"w":560,"h":70,"rotation":0,"opacity":1,"html":"Conserver","fontSize":48,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-19","type":"text","x":135,"y":555,"w":560,"h":90,"rotation":0,"opacity":1,"html":"Catalogue, métadonnées, CRUD,\u003cbr>règles de sécurité et index.","fontSize":25,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-20","type":"text","x":855,"y":405,"w":560,"h":35,"rotation":0,"opacity":1,"html":"REDIS","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-21","type":"text","x":855,"y":460,"w":560,"h":70,"rotation":0,"opacity":1,"html":"Accélérer","fontSize":48,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-22","type":"text","x":855,"y":555,"w":560,"h":90,"rotation":0,"opacity":1,"html":"Cache, TTL, compteurs,\u003cbr>historiques et classements.","fontSize":25,"fontFamily":"Segoe UI","fontWeight":500,"color":"#D8E1EE","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Philippe\n\nNotre problématique : conserver durablement un catalogue musical tout en proposant des recherches, des compteurs, des historiques et des classements rapides. Firestore répond à la persistance ; Redis répond à la rapidité."},{"id":"slide-37","background":"#F7F3EA","transition":"fade","elements":[{"id":"t-24","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"02 • DATASET MUSICAL","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-25","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#D8D1C5","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-26","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Le dataset rend le NoSQL concret.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-27","type":"text","x":95,"y":280,"w":400,"h":95,"rotation":0,"opacity":1,"html":"50 683","fontSize":64,"fontFamily":"Georgia","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-28","type":"text","x":95,"y":372,"w":400,"h":35,"rotation":0,"opacity":1,"html":"morceaux","fontSize":22,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-29","type":"text","x":600,"y":280,"w":400,"h":95,"rotation":0,"opacity":1,"html":"8 317","fontSize":64,"fontFamily":"Georgia","fontWeight":800,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-30","type":"text","x":600,"y":372,"w":400,"h":35,"rotation":0,"opacity":1,"html":"artistes","fontSize":22,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-31","type":"text","x":1105,"y":280,"w":400,"h":95,"rotation":0,"opacity":1,"html":"9,7 M","fontSize":64,"fontFamily":"Georgia","fontWeight":800,"color":"#6F88AD","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-32","type":"text","x":1105,"y":372,"w":400,"h":35,"rotation":0,"opacity":1,"html":"interactions","fontSize":22,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-33","type":"shape","shape":"rect","x":95,"y":500,"w":1410,"h":145,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-34","type":"text","x":130,"y":520,"w":1340,"h":28,"rotation":0,"opacity":1,"html":"ÉCHANTILLON DE DÉMONSTRATION","fontSize":17,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-35","type":"text","x":130,"y":557,"w":1340,"h":50,"rotation":0,"opacity":1,"html":"2 000 morceaux importés dans Firestore","fontSize":31,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-36","type":"text","x":95,"y":700,"w":1410,"h":45,"rotation":0,"opacity":1,"html":"Genre, année, énergie, tempo et danceability.","fontSize":22,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Philippe\n\nNous utilisons un dataset Kaggle inspiré du Million Song Dataset, enrichi avec Spotify et Last.fm : 50 683 morceaux, 8 317 artistes et environ 9,7 millions d’interactions. Pour la démonstration, nous travaillons sur un échantillon de 2 000 morceaux."},{"id":"slide-60","background":"#0E223A","transition":"fade","elements":[{"id":"t-38","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"03 • ARCHITECTURE","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-39","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#39506C","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-40","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Chaque technologie prend le rôle qu’elle maîtrise.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-41","type":"shape","shape":"rect","x":80,"y":330,"w":220,"h":140,"rotation":0,"opacity":1,"fill":"#203651","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-42","type":"text","x":100,"y":350,"w":180,"h":35,"rotation":0,"opacity":1,"html":"KAGGLE","fontSize":20,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-43","type":"text","x":100,"y":395,"w":180,"h":45,"rotation":0,"opacity":1,"html":"CSV","fontSize":30,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-44","type":"text","x":320,"y":365,"w":70,"h":50,"rotation":0,"opacity":1,"html":"→","fontSize":38,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-45","type":"shape","shape":"rect","x":400,"y":330,"w":220,"h":140,"rotation":0,"opacity":1,"fill":"#203651","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-46","type":"text","x":420,"y":350,"w":180,"h":35,"rotation":0,"opacity":1,"html":"ETL","fontSize":20,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-47","type":"text","x":420,"y":395,"w":180,"h":45,"rotation":0,"opacity":1,"html":"Python","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-48","type":"text","x":640,"y":365,"w":70,"h":50,"rotation":0,"opacity":1,"html":"→","fontSize":38,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-49","type":"shape","shape":"rect","x":720,"y":285,"w":280,"h":120,"rotation":0,"opacity":1,"fill":"#F28A70","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-50","type":"text","x":740,"y":300,"w":240,"h":35,"rotation":0,"opacity":1,"html":"FIRESTORE","fontSize":19,"fontFamily":"Segoe UI","fontWeight":800,"color":"#0E223A","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-51","type":"text","x":740,"y":340,"w":240,"h":40,"rotation":0,"opacity":1,"html":"Persistance","fontSize":26,"fontFamily":"Segoe UI","fontWeight":700,"color":"#0E223A","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-52","type":"shape","shape":"rect","x":720,"y":430,"w":280,"h":120,"rotation":0,"opacity":1,"fill":"#6F88AD","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-53","type":"text","x":740,"y":445,"w":240,"h":35,"rotation":0,"opacity":1,"html":"REDIS","fontSize":19,"fontFamily":"Segoe UI","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-54","type":"text","x":740,"y":485,"w":240,"h":40,"rotation":0,"opacity":1,"html":"Rapidité","fontSize":26,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-55","type":"text","x":1020,"y":365,"w":70,"h":50,"rotation":0,"opacity":1,"html":"→","fontSize":38,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-56","type":"shape","shape":"rect","x":1100,"y":330,"w":400,"h":140,"rotation":0,"opacity":1,"fill":"#F7F3EA","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-57","type":"text","x":1130,"y":350,"w":340,"h":35,"rotation":0,"opacity":1,"html":"APPLICATION","fontSize":19,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-58","type":"text","x":1130,"y":395,"w":340,"h":45,"rotation":0,"opacity":1,"html":"Streamlit","fontSize":30,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-59","type":"text","x":250,"y":690,"w":1100,"h":45,"rotation":0,"opacity":1,"html":"Firestore = source de vérité • Redis = couche d’accélération","fontSize":24,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"center","valign":"middle","lineHeight":1.15}],"notes":"Philippe\n\nLe fichier CSV est préparé par un script Python. Les documents sont importés dans Firestore, puis les données utiles aux accès rapides sont chargées dans Redis. L’application Streamlit interroge les deux moteurs selon le besoin."},{"id":"slide-73","background":"#F7F3EA","transition":"fade","elements":[{"id":"t-61","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"04 • CLOUD FIRESTORE","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-62","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#D8D1C5","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-63","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Firestore organise le catalogue en documents.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-64","type":"shape","shape":"rect","x":95,"y":300,"w":410,"h":410,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":22},{"id":"t-65","type":"text","x":135,"y":335,"w":330,"h":30,"rotation":0,"opacity":1,"html":"COLLECTION","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-66","type":"text","x":135,"y":395,"w":330,"h":70,"rotation":0,"opacity":1,"html":"tracks","fontSize":48,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-67","type":"text","x":135,"y":500,"w":330,"h":95,"rotation":0,"opacity":1,"html":"└── track_id\u003cbr>&nbsp;&nbsp;&nbsp;&nbsp;└── champs","fontSize":27,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-68","type":"text","x":135,"y":645,"w":330,"h":35,"rotation":0,"opacity":1,"html":"Un document par morceau","fontSize":19,"fontFamily":"Segoe UI","fontWeight":600,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-69","type":"shape","shape":"rect","x":550,"y":300,"w":950,"h":410,"rotation":0,"opacity":1,"fill":"#EEE9DE","stroke":"#DDD5C8","strokeWidth":2,"radius":22},{"id":"t-70","type":"text","x":600,"y":335,"w":60,"h":60,"rotation":0,"opacity":1,"html":"{","fontSize":42,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-71","type":"text","x":670,"y":345,"w":730,"h":270,"rotation":0,"opacity":1,"html":"&quot;track_id&quot;: &quot;TRNN…&quot;,\u003cbr>&quot;name&quot;: &quot;Where Is My Mind?&quot;,\u003cbr>&quot;artist&quot;: &quot;Pixies&quot;,\u003cbr>&quot;primary_genre&quot;: &quot;rock&quot;,\u003cbr>&quot;year&quot;: 2005,\u003cbr>&quot;energy&quot;: 0.435","fontSize":26,"fontFamily":"Consolas","fontWeight":600,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-72","type":"text","x":600,"y":620,"w":60,"h":60,"rotation":0,"opacity":1,"html":"}","fontSize":42,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15}],"notes":"Erwan\n\nFirestore est une base NoSQL orientée documents. Les données sont regroupées dans la collection tracks. Chaque morceau possède un identifiant et des champs flexibles comme le titre, l’artiste, le genre, l’année ou l’énergie."},{"id":"slide-87","background":"#0E223A","transition":"fade","elements":[{"id":"t-74","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"05 • CRUD, RÈGLES ET INDEX","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-75","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#39506C","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-76","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Le CRUD reste durable, les accès restent contrôlés.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-77","type":"shape","shape":"rect","x":95,"y":300,"w":850,"h":95,"rotation":0,"opacity":1,"fill":"#1B324F","stroke":"transparent","strokeWidth":0,"radius":18},{"id":"t-78","type":"text","x":130,"y":320,"w":780,"h":52,"rotation":0,"opacity":1,"html":"CREATE    →    READ    →    UPDATE    →    DELETE","fontSize":25,"fontFamily":"Segoe UI","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-79","type":"shape","shape":"rect","x":95,"y":430,"w":850,"h":250,"rotation":0,"opacity":1,"fill":"#1B324F","stroke":"transparent","strokeWidth":0,"radius":20},{"id":"t-80","type":"text","x":135,"y":460,"w":770,"h":30,"rotation":0,"opacity":1,"html":"RÈGLES FIRESTORE","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-81","type":"text","x":135,"y":520,"w":770,"h":95,"rotation":0,"opacity":1,"html":"Lecture du catalogue : autorisée\u003cbr>Écriture : compte administrateur","fontSize":27,"fontFamily":"Segoe UI","fontWeight":600,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-82","type":"shape","shape":"rect","x":1000,"y":300,"w":500,"h":380,"rotation":0,"opacity":1,"fill":"#F7F3EA","stroke":"transparent","strokeWidth":0,"radius":22},{"id":"t-83","type":"text","x":1040,"y":335,"w":420,"h":30,"rotation":0,"opacity":1,"html":"2 INDEX COMPOSÉS","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-84","type":"text","x":1040,"y":410,"w":200,"h":90,"rotation":0,"opacity":1,"html":"genre + année","fontSize":36,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-85","type":"text","x":1270,"y":410,"w":190,"h":90,"rotation":0,"opacity":1,"html":"artiste + titre","fontSize":36,"fontFamily":"Georgia","fontWeight":700,"color":"#6F88AD","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-86","type":"text","x":1040,"y":600,"w":420,"h":40,"rotation":0,"opacity":1,"html":"Des requêtes combinées efficaces","fontSize":20,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Erwan\n\nL’application couvre les quatre opérations CRUD : créer, lire, modifier et supprimer un morceau. Les règles Firestore permettent la lecture du catalogue et réservent les écritures au compte administrateur. Deux index composés accélèrent les filtres combinés."},{"id":"slide-109","background":"#F7F3EA","transition":"fade","elements":[{"id":"t-88","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"06 • REDIS","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-89","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#D8D1C5","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-90","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Redis transforme les événements en réponses immédiates.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-91","type":"text","x":95,"y":225,"w":1350,"h":45,"rotation":0,"opacity":1,"html":"En mémoire, chaque structure répond à un usage précis.","fontSize":25,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-92","type":"shape","shape":"rect","x":95,"y":330,"w":1410,"h":75,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":15},{"id":"t-93","type":"text","x":125,"y":345,"w":170,"h":40,"rotation":0,"opacity":1,"html":"STRING","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-94","type":"text","x":340,"y":345,"w":850,"h":40,"rotation":0,"opacity":1,"html":"cache JSON d’un morceau","fontSize":24,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-95","type":"text","x":1270,"y":345,"w":190,"h":40,"rotation":0,"opacity":1,"html":"TTL 900 s","fontSize":19,"fontFamily":"Segoe UI","fontWeight":700,"color":"#D8E1EE","align":"right","valign":"middle","lineHeight":1.15},{"id":"s-96","type":"shape","shape":"rect","x":95,"y":425,"w":1410,"h":75,"rotation":0,"opacity":1,"fill":"#6F88AD","stroke":"transparent","strokeWidth":0,"radius":15},{"id":"t-97","type":"text","x":125,"y":440,"w":170,"h":40,"rotation":0,"opacity":1,"html":"HASH","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-98","type":"text","x":340,"y":440,"w":850,"h":40,"rotation":0,"opacity":1,"html":"compteur d’écoutes","fontSize":24,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-99","type":"text","x":1270,"y":440,"w":190,"h":40,"rotation":0,"opacity":1,"html":"HINCRBY","fontSize":19,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"right","valign":"middle","lineHeight":1.15},{"id":"s-100","type":"shape","shape":"rect","x":95,"y":520,"w":1410,"h":75,"rotation":0,"opacity":1,"fill":"#F28A70","stroke":"transparent","strokeWidth":0,"radius":15},{"id":"t-101","type":"text","x":125,"y":535,"w":170,"h":40,"rotation":0,"opacity":1,"html":"LIST","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#0E223A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-102","type":"text","x":340,"y":535,"w":850,"h":40,"rotation":0,"opacity":1,"html":"50 dernières écoutes","fontSize":24,"fontFamily":"Segoe UI","fontWeight":700,"color":"#0E223A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-103","type":"text","x":1270,"y":535,"w":190,"h":40,"rotation":0,"opacity":1,"html":"LPUSH","fontSize":19,"fontFamily":"Segoe UI","fontWeight":700,"color":"#0E223A","align":"right","valign":"middle","lineHeight":1.15},{"id":"s-104","type":"shape","shape":"rect","x":95,"y":615,"w":1410,"h":75,"rotation":0,"opacity":1,"fill":"#EEE9DE","stroke":"#DDD5C8","strokeWidth":2,"radius":15},{"id":"t-105","type":"text","x":125,"y":630,"w":170,"h":40,"rotation":0,"opacity":1,"html":"SORTED SET","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-106","type":"text","x":340,"y":630,"w":850,"h":40,"rotation":0,"opacity":1,"html":"classement des morceaux","fontSize":24,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-107","type":"text","x":1270,"y":630,"w":190,"h":40,"rotation":0,"opacity":1,"html":"ZINCRBY","fontSize":19,"fontFamily":"Segoe UI","fontWeight":700,"color":"#6F88AD","align":"right","valign":"middle","lineHeight":1.15},{"id":"t-108","type":"text","x":95,"y":745,"w":1410,"h":35,"rotation":0,"opacity":1,"html":"2 000 morceaux et 891 artistes déjà classés dans Redis","fontSize":20,"fontFamily":"Segoe UI","fontWeight":600,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Evan\n\nRedis est une base NoSQL en mémoire. Nous utilisons plusieurs structures : String pour le cache, Hash pour les compteurs, List pour l’historique récent et Sorted Set pour le classement. Le TTL de 900 secondes limite la durée de vie du cache."},{"id":"slide-130","background":"#0E223A","transition":"fade","elements":[{"id":"t-110","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"07 • CACHE-ASIDE","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-111","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#39506C","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-112","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Le cache évite de relire Firestore inutilement.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-113","type":"shape","shape":"rect","x":75,"y":330,"w":270,"h":150,"rotation":0,"opacity":1,"fill":"#F7F3EA","stroke":"transparent","strokeWidth":0,"radius":20},{"id":"t-114","type":"text","x":95,"y":355,"w":55,"h":55,"rotation":0,"opacity":1,"html":"1","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-115","type":"text","x":155,"y":350,"w":165,"h":85,"rotation":0,"opacity":1,"html":"L’application\u003cbr>demande un morceau","fontSize":23,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-116","type":"text","x":350,"y":370,"w":55,"h":45,"rotation":0,"opacity":1,"html":"→","fontSize":34,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-117","type":"shape","shape":"rect","x":415,"y":330,"w":300,"h":150,"rotation":0,"opacity":1,"fill":"#6F88AD","stroke":"transparent","strokeWidth":0,"radius":20},{"id":"t-118","type":"text","x":435,"y":355,"w":55,"h":55,"rotation":0,"opacity":1,"html":"2","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-119","type":"text","x":495,"y":350,"w":190,"h":85,"rotation":0,"opacity":1,"html":"Redis vérifie\u003cbr>la clé de cache","fontSize":23,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-120","type":"text","x":720,"y":370,"w":120,"h":45,"rotation":0,"opacity":1,"html":"MISS →","fontSize":26,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-121","type":"shape","shape":"rect","x":850,"y":330,"w":300,"h":150,"rotation":0,"opacity":1,"fill":"#F28A70","stroke":"transparent","strokeWidth":0,"radius":20},{"id":"t-122","type":"text","x":870,"y":355,"w":55,"h":55,"rotation":0,"opacity":1,"html":"3","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#0E223A","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-123","type":"text","x":930,"y":350,"w":190,"h":85,"rotation":0,"opacity":1,"html":"Lecture\u003cbr>dans Firestore","fontSize":23,"fontFamily":"Segoe UI","fontWeight":700,"color":"#0E223A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-124","type":"text","x":1155,"y":370,"w":55,"h":45,"rotation":0,"opacity":1,"html":"→","fontSize":34,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-125","type":"shape","shape":"rect","x":1220,"y":330,"w":300,"h":150,"rotation":0,"opacity":1,"fill":"#1B324F","stroke":"#39506C","strokeWidth":2,"radius":20},{"id":"t-126","type":"text","x":1240,"y":355,"w":55,"h":55,"rotation":0,"opacity":1,"html":"4","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-127","type":"text","x":1300,"y":350,"w":185,"h":85,"rotation":0,"opacity":1,"html":"Copie\u003cbr>15 min","fontSize":23,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-128","type":"text","x":430,"y":520,"w":300,"h":40,"rotation":0,"opacity":1,"html":"HIT : réponse immédiate","fontSize":21,"fontFamily":"Segoe UI","fontWeight":800,"color":"#8FB99A","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-129","type":"text","x":215,"y":690,"w":1170,"h":45,"rotation":0,"opacity":1,"html":"Firestore conserve. Redis accélère. Le TTL limite les données anciennes.","fontSize":23,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"center","valign":"middle","lineHeight":1.15}],"notes":"Evan\n\nNous utilisons la stratégie cache-aside. L’application vérifie d’abord Redis. En cas de cache hit, la réponse est immédiate. En cas de miss, elle lit Firestore puis place une copie dans Redis pendant quinze minutes."},{"id":"slide-155","background":"#F7F3EA","transition":"fade","elements":[{"id":"t-131","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"08 • DÉMONSTRATION LIVE","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-132","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#D8D1C5","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-133","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Cinq gestes suffisent à prouver le fonctionnement.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-134","type":"shape","shape":"rect","x":95,"y":285,"w":90,"h":90,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":45},{"id":"t-135","type":"text","x":95,"y":285,"w":90,"h":90,"rotation":0,"opacity":1,"html":"1","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-136","type":"text","x":220,"y":285,"w":520,"h":40,"rotation":0,"opacity":1,"html":"Ouvrir tracks","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-137","type":"text","x":220,"y":330,"w":520,"h":35,"rotation":0,"opacity":1,"html":"Voir un document réel dans Firestore","fontSize":20,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-138","type":"shape","shape":"rect","x":95,"y":420,"w":90,"h":90,"rotation":0,"opacity":1,"fill":"#6F88AD","stroke":"transparent","strokeWidth":0,"radius":45},{"id":"t-139","type":"text","x":95,"y":420,"w":90,"h":90,"rotation":0,"opacity":1,"html":"2","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-140","type":"text","x":220,"y":420,"w":520,"h":40,"rotation":0,"opacity":1,"html":"Rechercher","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-141","type":"text","x":220,"y":465,"w":520,"h":35,"rotation":0,"opacity":1,"html":"Afficher un morceau dans MusicPulse","fontSize":20,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-142","type":"shape","shape":"rect","x":95,"y":555,"w":90,"h":90,"rotation":0,"opacity":1,"fill":"#F28A70","stroke":"transparent","strokeWidth":0,"radius":45},{"id":"t-143","type":"text","x":95,"y":555,"w":90,"h":90,"rotation":0,"opacity":1,"html":"3","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#0E223A","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-144","type":"text","x":220,"y":555,"w":520,"h":40,"rotation":0,"opacity":1,"html":"Faire le CRUD","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-145","type":"text","x":220,"y":600,"w":520,"h":35,"rotation":0,"opacity":1,"html":"Créer → lire → modifier → supprimer","fontSize":20,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-146","type":"shape","shape":"rect","x":850,"y":330,"w":90,"h":90,"rotation":0,"opacity":1,"fill":"#EEE9DE","stroke":"#DDD5C8","strokeWidth":2,"radius":45},{"id":"t-147","type":"text","x":850,"y":330,"w":90,"h":90,"rotation":0,"opacity":1,"html":"4","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-148","type":"text","x":975,"y":330,"w":500,"h":40,"rotation":0,"opacity":1,"html":"Simuler des écoutes","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-149","type":"text","x":975,"y":375,"w":500,"h":35,"rotation":0,"opacity":1,"html":"Mettre à jour compteurs et classements","fontSize":20,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-150","type":"shape","shape":"rect","x":850,"y":505,"w":90,"h":90,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":45},{"id":"t-151","type":"text","x":850,"y":505,"w":90,"h":90,"rotation":0,"opacity":1,"html":"5","fontSize":36,"fontFamily":"Georgia","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-152","type":"text","x":975,"y":505,"w":500,"h":40,"rotation":0,"opacity":1,"html":"Rejouer la lecture","fontSize":28,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-153","type":"text","x":975,"y":550,"w":500,"h":35,"rotation":0,"opacity":1,"html":"Comparer cache miss et cache hit","fontSize":20,"fontFamily":"Segoe UI","fontWeight":500,"color":"#66758A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-154","type":"text","x":850,"y":650,"w":600,"h":40,"rotation":0,"opacity":1,"html":"Morceau de test : DEMO_MUSICPULSE","fontSize":20,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Tous\n\nErwan ouvre la collection tracks. Philippe recherche un morceau dans MusicPulse et montre le CRUD. Evan simule des écoutes pour faire évoluer les compteurs et le classement, puis rejoue une lecture afin de comparer un cache miss et un cache hit."},{"id":"slide-169","background":"#0E223A","transition":"fade","elements":[{"id":"t-156","type":"text","x":90,"y":45,"w":1420,"h":30,"rotation":0,"opacity":1,"html":"09 • COMPLÉMENTARITÉ","fontSize":17,"fontFamily":"Segoe UI","fontWeight":700,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-157","type":"shape","shape":"rect","x":90,"y":88,"w":1420,"h":2,"rotation":0,"opacity":1,"fill":"#39506C","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-158","type":"text","x":90,"y":110,"w":1420,"h":110,"rotation":0,"opacity":1,"html":"Firestore et Redis ne se remplacent pas.","fontSize":45,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-159","type":"shape","shape":"rect","x":95,"y":305,"w":600,"h":355,"rotation":0,"opacity":1,"fill":"#F7F3EA","stroke":"transparent","strokeWidth":0,"radius":24},{"id":"t-160","type":"text","x":135,"y":340,"w":520,"h":30,"rotation":0,"opacity":1,"html":"FIRESTORE","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-161","type":"text","x":135,"y":395,"w":520,"h":70,"rotation":0,"opacity":1,"html":"Durable","fontSize":48,"fontFamily":"Georgia","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-162","type":"text","x":135,"y":495,"w":520,"h":120,"rotation":0,"opacity":1,"html":"• Collections et documents\u003cbr>• CRUD principal\u003cbr>• Règles de sécurité\u003cbr>• Index composés","fontSize":24,"fontFamily":"Segoe UI","fontWeight":600,"color":"#6F88AD","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-163","type":"text","x":740,"y":430,"w":120,"h":80,"rotation":0,"opacity":1,"html":"+","fontSize":56,"fontFamily":"Georgia","fontWeight":700,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"s-164","type":"shape","shape":"rect","x":905,"y":305,"w":600,"h":355,"rotation":0,"opacity":1,"fill":"#1B324F","stroke":"#39506C","strokeWidth":2,"radius":24},{"id":"t-165","type":"text","x":945,"y":340,"w":520,"h":30,"rotation":0,"opacity":1,"html":"REDIS","fontSize":18,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-166","type":"text","x":945,"y":395,"w":520,"h":70,"rotation":0,"opacity":1,"html":"Rapide","fontSize":48,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-167","type":"text","x":945,"y":495,"w":520,"h":120,"rotation":0,"opacity":1,"html":"• Données en mémoire\u003cbr>• Cache et TTL\u003cbr>• Compteurs atomiques\u003cbr>• Classements","fontSize":24,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-168","type":"text","x":280,"y":720,"w":1040,"h":40,"rotation":0,"opacity":1,"html":"Une source de vérité + une couche d’accélération","fontSize":22,"fontFamily":"Segoe UI","fontWeight":700,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15}],"notes":"Philippe\n\nFirestore et Redis ne sont pas concurrents dans notre architecture. Firestore garantit la persistance, la sécurité et le CRUD. Redis fournit la vitesse, le cache, les compteurs atomiques et les classements."},{"id":"slide-181","background":"#F28A70","transition":"fade","elements":[{"id":"t-170","type":"text","x":95,"y":65,"w":1410,"h":30,"rotation":0,"opacity":1,"html":"CONCLUSION","fontSize":17,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F7F3EA","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-171","type":"shape","shape":"rect","x":95,"y":105,"w":1410,"h":2,"rotation":0,"opacity":1,"fill":"#F6B6A7","stroke":"transparent","strokeWidth":0,"radius":0},{"id":"t-172","type":"text","x":95,"y":180,"w":850,"h":290,"rotation":0,"opacity":1,"html":"Deux moteurs NoSQL.\u003cbr>Une architecture\u003cbr>cohérente.","fontSize":65,"fontFamily":"Georgia","fontWeight":700,"color":"#FFFFFF","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-173","type":"text","x":100,"y":520,"w":700,"h":42,"rotation":0,"opacity":1,"html":"Firestore conserve.","fontSize":27,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-174","type":"text","x":100,"y":580,"w":700,"h":42,"rotation":0,"opacity":1,"html":"Redis accélère.","fontSize":27,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"t-175","type":"text","x":100,"y":640,"w":760,"h":42,"rotation":0,"opacity":1,"html":"MusicPulse démontre leur complémentarité.","fontSize":27,"fontFamily":"Segoe UI","fontWeight":700,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15},{"id":"s-176","type":"shape","shape":"rect","x":1050,"y":285,"w":390,"h":285,"rotation":0,"opacity":1,"fill":"#0E223A","stroke":"transparent","strokeWidth":0,"radius":28},{"id":"t-177","type":"text","x":1090,"y":335,"w":310,"h":85,"rotation":0,"opacity":1,"html":"2 000","fontSize":58,"fontFamily":"Georgia","fontWeight":800,"color":"#FFFFFF","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-178","type":"text","x":1090,"y":420,"w":310,"h":40,"rotation":0,"opacity":1,"html":"morceaux","fontSize":23,"fontFamily":"Segoe UI","fontWeight":800,"color":"#F28A70","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-179","type":"text","x":1090,"y":485,"w":310,"h":60,"rotation":0,"opacity":1,"html":"une démonstration\u003cbr>prête à présenter","fontSize":21,"fontFamily":"Segoe UI","fontWeight":600,"color":"#D8E1EE","align":"center","valign":"middle","lineHeight":1.15},{"id":"t-180","type":"text","x":100,"y":775,"w":900,"h":35,"rotation":0,"opacity":1,"html":"Philippe Maillot • Erwan Marchand • Evan Afonso","fontSize":18,"fontFamily":"Segoe UI","fontWeight":600,"color":"#14243A","align":"left","valign":"middle","lineHeight":1.15}],"notes":"Philippe, Erwan et Evan\n\nPhilippe : ce projet nous a permis de comprendre deux approches différentes du NoSQL. Erwan : Firestore structure et sécurise les données. Evan : Redis apporte la rapidité. Ensemble, ils forment une architecture cohérente et démontrable."}],"modified":"2026-08-20T09:07:34.067Z"}
+</script>
+  <style type="text/css" data-vite-dev-id="/app/slides/src/styles.css">/* ————— bento/slides chrome ————— */
+
+/* THEME TOKENS — chrome only.
+ *
+ * A theme is a VIEWER preference (kernel/src/theme.ts), never document data:
+ * two people opening one file are two readers in two rooms, and a theme in the
+ * document would make a file's bytes depend on who last looked at it.
+ *
+ * THE DOCUMENT DOES NOT INVERT. Dark dims the chrome around the deck. A slide's
+ * background is data the author chose — somebody proofing a deck at midnight
+ * still needs to see what will be projected. So the slide surface, the starter
+ * deck's brand art and anything rendering document content stay OUT of these
+ * blocks; `--slide-shadow` describes the chrome's presentation of the page, not
+ * the page.
+ *
+ * LIGHT — the suite's shared palette, character for character with
+ * type/src/styles.css and spaces/src/styles.css. Do not let these drift.
+ */
+:root, :root[data-theme="light"] {
+  --ink: #1e2a3a;
+  --ink-2: #31445c;
+  --chrome: #f5f7fa;
+  --chrome-2: #eceff4;
+  --line: #e3e8ef;
+  --muted: #5b6472;
+  --accent: #f7a600;
+  --accent-ink: #7a5200;
+  --blue: #5b8def;
+  --field: #ffffff;          /* form-control surface — CHROME, not the slide */
+  --surface: #ffffff;        /* panels, dialogs, menus */
+  --grid-dot: #d5dbe4;       /* the canvas dot grid behind the stage */
+  --chip: rgb(255 255 255 / 0.85);   /* translucent label over a thumbnail */
+  --slide-shadow: 0 10px 40px rgb(20 30 45 / 0.18), 0 2px 8px rgb(20 30 45 / 0.10);
+}
+
+/* DARK — the same roles, not the same values. `--ink` is the chrome's
+   FOREGROUND, so it inverts; `--accent` does not, because it is brand. */
+:root[data-theme="dark"] {
+  --ink: #e7eaf0;
+  --ink-2: #b3bcca;
+  --chrome: #1b1f26;
+  --chrome-2: #262b34;
+  --line: #333a45;
+  --muted: #8b95a4;
+  --accent: #f7a600;
+  --accent-ink: #3a2a00;     /* text ON the accent, so it flips */
+  --blue: #7aa5f5;           /* lifted: #5b8def is unreadable on dark chrome */
+  --field: #12151a;
+  --surface: #21262e;
+  --grid-dot: #2b313b;
+  --chip: rgb(24 28 34 / 0.85);
+  /* deeper: a light slide on a dark canvas needs more separation than the
+     same slide on a light one */
+  --slide-shadow: 0 14px 48px rgb(0 0 0 / 0.55), 0 2px 10px rgb(0 0 0 / 0.4);
+}
+
+:root {
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--ink);
+  background: var(--chrome);
+  overscroll-behavior: none;
+}
+
+#app { height: 100%; }
+
+.ed-root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  /* Nothing in this column may leak sideways. Without this, a topbar wider than
+     the viewport turned into DOCUMENT scroll — on a phone the bar needed 681px
+     of a 402px screen, so swiping the toolbar dragged the whole canvas off. */
+  overflow: hidden;
+}
+/* iOS Safari (WebKit) renders a <select>'s chosen value as BLANK text when any
+   ancestor sets user-select:none — restore it on form fields app-wide. Inputs
+   and textareas need it too or the iOS text-selection caret misbehaves. */
+select, option, input, textarea, [contenteditable='true'] {
+  -webkit-user-select: auto;
+  user-select: auto;
+}
+/* The editor chrome is light-only. Without this, dark-mode phones render
+   NATIVE form controls dark (and Chrome-on-Android may force-darken the whole
+   page) while our ink stays dark — dark-on-dark, i.e. "blank" dropdowns.
+   Pair with the color-scheme meta in index.html; the explicit background/color
+   below keeps contrast even under a force-dark engine that ignores both. */
+:root { color-scheme: only light; }
+select, .ed-row input, .ed-row textarea {
+  background: var(--field);
+  color: var(--ink-2);
+}
+option { background: var(--field); color: var(--ink); }
+
+/* ————— THE DOCUMENT NEVER MIRRORS —————————————————————————————————————————
+   An Arabic/Hebrew viewer gets an RTL *chrome* (i18n.ts applyDirection sets
+   dir on <html>). The DOCUMENT must be immune to that: slide elements carry
+   absolute x/y model coordinates, so a mirrored surface would move every
+   element of every existing deck, and the same file would look different
+   depending on who opened it — a format-level bug, far worse than an
+   unmirrored panel.
+
+   So every surface that draws slide content is pinned back to LTR:
+
+   - .bento-slide is the SHARED root of the canvas stage, sidebar thumbnails,
+     present sections, print pages and the speaker view's frames (render.ts
+     renderSlide), so this one rule covers all four surfaces at once. The
+     containers are pinned too, belt and braces, because they also carry
+     positioned chrome of their own.
+   - .ed-scroll additionally protects the canvas COORDINATE MATH: direction
+     changes what scrollLeft means (0 at the right edge, negative leftwards),
+     and canvas.ts reads/writes scrollLeft to centre and to pin the stage
+     during Moveable gestures. Pinned, none of that math can shift.
+   - .moveable-control-box is mounted with rootContainer: document.body, i.e.
+     outside the canvas subtree — it needs its own pin.
+
+   Text INSIDE elements still resolves its own direction per element, from the
+   content the author typed (render.ts sets dir="auto"). That is the content
+   half of RTL and is unaffected by any of this. */
+.bento-slide,
+.bento-thumb-surface,
+.ed-scroll,
+.bento-present-overlay,
+.moveable-control-box,
+#bento-print {
+  direction: ltr;
+}
+
+/* ————— topbar ————— */
+
+.ed-topbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  /* viewport-fit=cover puts the page under the rounded corners, the Dynamic
+     Island and the home indicator, so fixed chrome has to inset ITSELF or its
+     end buttons sit under the curve. env(safe-area-inset-*) is the only handle
+     the platform gives — there is no corner-radius API — and it already encodes
+     corners, island and indicator together.
+     Each max() also lists var(--tray-safe-*). Inside a WKWebView host,
+     env(safe-area-inset-*) reads 0px even when the device genuinely has insets
+     (measured: native 62/0/34/0, CSS 0px), so bento/tray publishes the real
+     numbers under those names. In a browser the variables are undefined, resolve
+     to 0px, and env() does the work as normal.
+     max() keeps the normal padding on every device that reports 0. The
+     BACKGROUND still bleeds to the edge; only the content is inset, which is
+     the point: colour to the edge, controls out of the curve. */
+  padding: max(8px, env(safe-area-inset-top), var(--tray-safe-top, 0px)) max(14px, env(safe-area-inset-right), var(--tray-safe-right, 0px))
+           8px max(14px, env(safe-area-inset-left), var(--tray-safe-left, 0px));
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  /* Above the phone-mode panel drawers (z 40), and this number is doing more
+     work than it looks. The bar is a FLEX ITEM of .ed-root, and a flex item
+     honours z-index even at position:static — so this value does not merely
+     order the bar, it opens a STACKING CONTEXT that caps everything inside it.
+     At 20 the ⋯ menu's own z-index: 50 was capped at 20 and the drawers at 40
+     painted straight over it: on a narrow window with the properties panel
+     open, the menu rendered in full and every click landed on the panel behind
+     it. Raising its own z-index could never have fixed that — only the ceiling
+     moves. Keep this above the drawers and below the dialogs/toasts (59+). */
+  z-index: 50;
+}
+
+.ed-logo { display: flex; align-items: center; gap: 7px; font-size: 15px; white-space: nowrap; }
+.ed-logo-mark { display: block; border-radius: 5px; }
+
+.ed-title {
+  font: inherit;
+  font-size: 14px;
+  color: var(--ink);
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 5px 8px;
+  width: 220px;
+  background: transparent;
+}
+.ed-title:hover { border-color: var(--line); }
+.ed-title:focus { border-color: var(--blue); outline: none; background: var(--field); }
+
+/* The file this deck is open AS — quieter than the deck title beside it.
+   Shows the BASE name only: every Bento file ends in ".bento.html", so the
+   extension is the one part that identifies nothing (a first attempt truncated
+   from the right and rendered "…tml", which is worse than showing nothing).
+   Never shrinks — it competed with the title input and squeezed it to "Bento S"
+   — and it leaves the bar entirely at the same width the button labels do. */
+.ed-filechip {
+  font-size: 12px;
+  color: var(--muted);
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--sunk, rgba(127, 127, 127, .08));
+  max-width: 160px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+  cursor: default;
+}
+.ed-filechip[hidden] { display: none; }
+.ed-topbar.ed-bar-compact .ed-filechip { display: none; }
+
+/* unsaved-changes dot — badges the SAVE button's corner (amber when dirty) */
+.ed-dirty {
+  position: absolute;
+  top: 3px; inset-inline-end: 3px;
+  width: 7px; height: 7px; border-radius: 50%;
+  background: transparent; pointer-events: none;
+}
+.ed-dirty.on { background: var(--accent); }
+.ed-split > .ed-btn:first-child { position: relative; }
+
+.ed-group { display: flex; align-items: center; gap: 6px; }
+.ed-group-right { margin-inline-start: auto; }
+
+.ed-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: inherit;
+  font-size: 13px;
+  color: var(--ink-2);
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 6px 9px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+a.ed-btn { text-decoration: none; }  /* the update block's "What's new" link is styled as a button */
+.ed-btn:hover { background: var(--chrome-2); }
+.ed-btn:active { background: var(--line); }
+.ed-btn svg { display: block; }
+
+.ed-btn-primary {
+  background: var(--ink);
+  color: #fff;
+  padding: 6px 14px;
+}
+.ed-btn-primary:hover { background: var(--ink-2); }
+
+.ed-dropdown { position: relative; }
+.ed-menu {
+  display: none;
+  position: absolute;
+  top: calc(100% + 4px);
+  inset-inline-start: 0;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgb(20 30 45 / 0.14);
+  padding: 4px;
+  z-index: 50;
+  min-width: 150px;
+}
+/* DIRECT child, not any descendant. Phone chrome demotes whole dropdown
+   widgets (Share, Language) into the ⋯ menu, so a descendant selector opened
+   their menus too — ⋯ came up with the entire language list already unrolled
+   inside it. Every .ed-menu is appended straight onto its own .ed-dropdown, so
+   scoping to `>` is exact. */
+.ed-dropdown.open > .ed-menu { display: flex; }
+.ed-menu .ed-btn { justify-content: flex-start; width: 100%; }
+
+/* ————— main layout ————— */
+
+.ed-main { flex: 1; display: flex; min-height: 0; }
+
+.ed-sidebar {
+  width: var(--panew, 188px);
+  flex: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: var(--surface);
+  border-inline-end: 1px solid var(--line);
+}
+
+.ed-thumb {
+  position: relative;
+  max-width: 100%;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  flex: none;
+  background: var(--surface);
+}
+.ed-thumb:hover { border-color: #c9d2de; }
+.ed-thumb.active { border-color: var(--accent); }
+.ed-thumb.drop { border-color: var(--blue); }
+.ed-thumb-num {
+  position: absolute;
+  top: 4px; inset-inline-start: 4px;
+  z-index: 2;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--chip);
+  border-radius: 4px;
+  padding: 1px 5px;
+}
+.ed-thumb-tools {
+  position: absolute;
+  inset-inline-end: 4px; top: 4px;
+  z-index: 2;
+  display: none;
+  gap: 2px;
+}
+.ed-thumb:hover .ed-thumb-tools { display: flex; }
+.ed-thumb-tools .ed-btn { padding: 3px; background: var(--chip); }
+
+.bento-thumb-surface { overflow: hidden; pointer-events: none; }
+
+.ed-add-slide { border: 1.5px dashed var(--line); justify-content: center; color: var(--muted); align-self: stretch; }
+
+/* interactive-state thumbs: slightly smaller, centred under their parent.
+   No explicit width — the box sizes to its rendered surface (like normal
+   thumbs), so the whole slide stays visible inside the border. */
+.ed-thumb-state {
+  margin-top: -2px;
+  opacity: 0.72;
+  border-style: dashed;
+}
+.ed-thumb-state:hover, .ed-thumb-state.active { opacity: 1; }
+.ed-thumb-state .ed-thumb-num {
+  font-size: 9px;
+  max-width: 96px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ed-btn-block {
+  width: 100%;
+  justify-content: center;
+  border: 1px solid var(--line);
+  margin-top: 2px;
+}
+
+.ed-row input[type='text'] {
+  width: 110px;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  color: var(--ink);
+}
+
+/* ————— canvas ————— */
+
+.ed-canvas-wrap {
+  flex: 1;
+  min-width: 0;
+  background:
+    radial-gradient(circle at 1px 1px, var(--grid-dot) 1px, transparent 0) 0 0 / 22px 22px,
+    var(--chrome);
+  overflow: hidden;
+  position: relative;
+}
+
+/* scrollable viewport: auto-margins centre the stage when it fits and
+   allow proper scrolling in every direction when zoomed past the window */
+.ed-scroll {
+  position: absolute;
+  inset: 0;
+  overflow: auto;
+  display: flex;
+  /* classic (non-overlay) scrollbars: reserve the gutter so a bar appearing
+     mid-drag can't shrink the client box and shove the centred stage around */
+  scrollbar-gutter: stable both-edges;
+}
+
+.ed-stage {
+  position: relative;
+  flex: none;
+  margin: auto;
+  box-shadow: var(--slide-shadow);
+  border-radius: 2px;
+}
+
+/* zoom controls, bottom-end corner of the canvas */
+.ed-zoombar {
+  position: absolute;
+  inset-inline-end: 14px;
+  bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 3px 6px;
+  box-shadow: 0 4px 14px rgb(20 30 45 / 0.10);
+  z-index: 10;
+}
+.ed-zoombtn {
+  font: inherit;
+  font-size: 14px;
+  line-height: 1;
+  color: var(--ink-2);
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+.ed-zoombtn:hover { background: var(--chrome-2); }
+.ed-zoomlabel { font-size: 11.5px; min-width: 44px; text-align: center; color: var(--muted); }
+
+.ed-stage-scale { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+
+/* hover-set switcher chips, floating above the canvas */
+.ed-setbar {
+  position: absolute;
+  top: 12px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 5px 10px;
+  box-shadow: 0 4px 14px rgb(20 30 45 / 0.10);
+  z-index: 10;
+  max-width: calc(100% - 48px);
+  overflow-x: auto;
+}
+.ed-setbar-label {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--muted);
+  white-space: nowrap;
+}
+.ed-setchip {
+  font: inherit;
+  font-size: 12px;
+  color: var(--ink-2);
+  background: var(--chrome);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 3px 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ed-setchip:hover { background: var(--chrome-2); }
+.ed-setchip.active {
+  background: var(--ink);
+  color: #fff;
+}
+
+/* ————— slide surface (shared by canvas, thumbs, present) ————— */
+
+.bento-slide { position: relative; overflow: hidden; }
+
+.bento-el { position: absolute; contain: layout style; }
+.bento-el-text .bento-text-inner {
+  overflow-wrap: break-word;
+  outline: none;
+  cursor: default;
+}
+/* A hidden slide is still an ordinary, editable slide — it is just out of the
+   show. Dimmed rather than greyed out, and the number struck through, so the
+   sidebar reads as "this one will be skipped" without looking broken. */
+.ed-thumb-hidden .bento-thumb-surface { opacity: 0.42; }
+.ed-thumb-hidden .ed-thumb-num {
+  text-decoration: line-through;
+  opacity: 0.75;
+}
+
+.ed-stage .bento-el { cursor: grab; }
+.ed-stage .bento-el:active { cursor: grabbing; }
+.ed-stage .bento-editing { cursor: text; }
+.ed-stage .bento-editing .bento-text-inner {
+  cursor: text;
+  user-select: text;
+  box-shadow: 0 0 0 1.5px var(--blue);
+  background: rgb(91 141 239 / 0.06);
+  min-height: 1em;
+}
+
+/* ————— properties panel ————— */
+
+.ed-props {
+  width: var(--panew, 236px);
+  flex: none;
+  overflow-y: auto;
+  background: var(--surface);
+  border-inline-start: 1px solid var(--line);
+  padding: 14px;
+}
+
+.ed-section {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 18px 0 8px;
+}
+.ed-section:first-child { margin-top: 2px; }
+
+.ed-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+.ed-row > span { flex: none; }
+.ed-row input[type='number'], .ed-row select {
+  width: 110px;
+  font: inherit;
+  font-size: 12.5px;
+  padding: 4px 6px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--field);
+  color: var(--ink);
+}
+.ed-row input[type='color'] {
+  width: 110px;
+  height: 26px;
+  padding: 1px 2px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--field);
+}
+
+.ed-grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+.ed-mini { display: flex; align-items: center; gap: 5px; font-size: 12.5px; color: var(--ink-2); }
+.ed-mini input {
+  width: 100%;
+  min-width: 0;
+  font: inherit;
+  font-size: 12px;
+  padding: 4px 5px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.ed-ops { display: flex; gap: 4px; margin-bottom: 10px; }
+.ed-btn-icon { border: 1px solid var(--line); padding: 6px; }
+
+.ed-notes {
+  width: 100%;
+  min-height: 130px;
+  font: inherit;
+  font-size: 12.5px;
+  line-height: 1.5;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  resize: vertical;
+  color: var(--ink);
+}
+
+.ed-hint {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--muted);
+  background: var(--chrome);
+  border-radius: 8px;
+  padding: 8px 10px;
+}
+.ed-hint code { font-size: 10.5px; word-break: break-all; }
+.ed-morph-warn { color: #C0392B; background: rgba(192, 57, 43, 0.08); }
+
+.ed-btn-update {
+  background: #FF9E8A !important;
+  color: #0D1B2E !important;
+  font-weight: 700;
+}
+.ed-shadow-cap {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 4px 0 6px;
+}
+.ed-about-auto {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+  user-select: none;
+}
+
+/* About actions: buttons must read against the white box without hover */
+.ed-about .ed-btn-primary {
+  background: #FF9E8A;
+  color: #0D1B2E;
+  font-weight: 700;
+}
+.ed-about .ed-btn-primary:hover { background: #F07B54; }
+.ed-about .ed-btn:not(.ed-btn-primary) {
+  border-color: var(--line);
+  background: var(--surface);
+}
+.ed-about .ed-btn:not(.ed-btn-primary):hover { background: var(--chrome-2); }
+
+/* ————— about dialog ————— */
+
+.ed-about-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1500;
+  background: rgb(15 23 36 / 0.38);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ed-about {
+  /* 440 rather than 360: release notes ride inline in the manifest now, and a
+     narrower box turned every bullet into two wrapped lines. The calc() keeps
+     a real gutter on a 375px phone, where the editor boots panels-collapsed. */
+  width: min(440px, calc(100vw - 24px));
+  background: var(--surface);
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgb(15 23 36 / 0.3);
+  padding: 20px;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* tall dialogs (long help, version history) must scroll, not overflow the viewport */
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.ed-about-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.ed-about-head b { font-size: 15px; display: block; }
+.ed-about-head span { font-size: 11.5px; color: var(--muted); }
+/* logo/wordmark links home — keep it looking like the logo, not a link */
+.ed-about-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: inherit;
+  text-decoration: none;
+  border-radius: 8px;
+}
+.ed-about-logo:hover { opacity: 0.82; }
+/* engagement line back to the site */
+.ed-about-promo {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin: -2px 0 2px;
+}
+.ed-about-promo a { color: var(--blue); text-decoration: none; }
+.ed-about-promo a:hover { text-decoration: underline; }
+.ed-about-row { display: flex; gap: 8px; }
+.ed-about-status {
+  min-height: 18px;
+  /* The dialog is a height-capped column flex (max-height: 88vh, scrolls). A
+     flex item shrinks by default, so once this block grew — an update being
+     available adds a heading, a notes link and two buttons — it collapsed to
+     exactly its min-height and its children spilled over the controls below,
+     overlapping the auto-check row and Document properties. Don't shrink: let
+     the dialog scroll, which is what its overflow-y is for. */
+  flex-shrink: 0;
+  color: var(--ink);
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-start;
+}
+.ed-about-new { font-weight: 600; }
+.ed-about-notes {
+  align-self: stretch;
+  color: var(--muted);
+  background: var(--chrome);
+  border-radius: 8px;
+  padding: 7px 10px;
+  white-space: pre-wrap;
+  max-height: 140px;
+  overflow: auto;
+}
+
+/* ————— "an update is available" card —————
+   This is the one moment in the dialog where the user has a decision to make,
+   so it is grouped and given room instead of being five loose children of the
+   status block. Before: the notes sat in a 140px porthole inside a dialog that
+   was itself scrolling, and the three actions stacked vertically underneath —
+   so a five-bullet changelog read as one line plus two scrollbars. */
+.ed-about-update {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 11px 13px;
+  border: 1px solid var(--line);
+  border-inline-start: 3px solid #FF9E8A;
+  border-radius: 10px;
+}
+.ed-about-release {
+  color: var(--ink-2);
+  background: var(--chrome);
+  border-radius: 8px;
+  padding: 9px 12px;
+  line-height: 1.5;
+  /* Its OWN scroll region, sized off the viewport. release.mjs caps the notes
+     at five bullets plus an "…and N more" line, which fits here whole at any
+     normal window height; anything longer scrolls HERE, not the whole dialog. */
+  max-height: min(300px, 42vh);
+  overflow-y: auto;
+  overflow-wrap: anywhere;
+}
+.ed-about-release > div + div { margin-top: 5px; }
+/* hanging indent: a wrapped bullet lines up under its own text, not the marker */
+.ed-about-note {
+  padding-inline-start: 14px;
+  text-indent: -14px;
+}
+.ed-about-note::before { content: '•\00a0'; }
+.ed-about-more { color: var(--muted); font-style: italic; }
+/* wrap instead of stacking: three actions fit in one or two rows */
+.ed-about-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ed-about-actions .ed-btn { max-width: 100%; }
+.ed-about-json {
+  width: 100%;
+  font: 11px/1.4 ui-monospace, Menlo, monospace;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 8px;
+  resize: vertical;
+}
+.ed-about-fine {
+  font-size: 10.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  border-top: 1px solid var(--chrome);
+  padding-top: 10px;
+}
+
+/* ————— toast ————— */
+
+.ed-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translate(-50%, 12px);
+  background: var(--ink);
+  color: #fff;
+  font-size: 13px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  opacity: 0;
+  transition: all 0.25s ease;
+  z-index: 2000;
+  pointer-events: none;
+}
+.ed-toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+/* ————— present overlay ————— */
+
+.bento-present-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: #000;
+}
+.bento-present-overlay .reveal,
+.bento-present-overlay .reveal-viewport {
+  background: #000;
+}
+.bento-present-overlay .reveal {
+  width: 100%;
+  height: 100%;
+  --r-background-color: #000;
+  --r-main-color: #fff;
+  --r-main-font-size: 32px;
+  --r-link-color: #f7a600;
+  --r-link-color-hover: #ffc23e;
+  --r-selection-background-color: #f7a600;
+  --r-controls-color: rgb(255 255 255 / 0.6);
+  --r-progress-color: #f7a600;
+  --r-overlay-element-bg-color: 255, 255, 255;
+  --r-overlay-element-fg-color: 0, 0, 0;
+}
+.bento-present-overlay .reveal .slides section { padding: 0; }
+/* Presenter laser: viewport-level so its screen-space size stays constant at
+   every Reveal scale. The visual layer stays pointer-transparent so slide
+   links, hover effects, charts and media remain interactive while it is armed. */
+.bento-laser-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 59;
+  pointer-events: none;
+}
+.bento-present-overlay.laser-over-slide .bento-slide,
+.bento-present-overlay.laser-over-slide .bento-slide * { cursor: none !important; }
+.bento-laser-trail {
+  position: absolute;
+  inset: 0;
+  display: block;
+  overflow: hidden;
+  pointer-events: none;
+}
+.bento-laser-trail-segment {
+  fill: none;
+  stroke-linecap: butt;
+  vector-effect: non-scaling-stroke;
+}
+.bento-laser-trail-segment.halo { stroke: rgb(255 255 255 / 0.9); }
+.bento-laser-trail-segment.core { stroke: #ef252f; }
+.bento-laser-trail-segment.tail-tip { stroke: none; }
+.bento-laser-trail-segment.tail-tip.halo { fill: rgb(255 255 255 / 0.9); }
+.bento-laser-trail-segment.tail-tip.core { fill: #ef252f; }
+.bento-laser-dot {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  box-sizing: border-box;
+  border: 2px solid rgb(255 255 255 / 0.94);
+  border-radius: 50%;
+  background: #ef252f;
+  box-shadow: 0 0 0 1px rgb(0 0 0 / 0.55), 0 0 10px rgb(239 37 47 / 0.9);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: opacity 0.08s linear;
+}
+.bento-laser-dot.visible { opacity: 1; }
+.bento-present-overlay.reduce-motion .bento-laser-trail { display: none; }
+.bento-present-overlay.reduce-motion .bento-laser-dot { transition: none; }
+/* Reduced motion (M / speaker toggle / OS prefers-reduced-motion): JS fx are
+   skipped in present.ts; this neutralises CSS-driven motion too — Reveal's
+   slide transitions cut instantly and svg keyframe animations don't play. */
+.bento-present-overlay.reduce-motion .reveal .slides section { transition: none !important; }
+.bento-present-overlay.reduce-motion .bento-el-svg * { animation: none !important; }
+/* dual-screen: one-click permission grant + transient toast */
+.bento-present-grant {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 100000;
+  border: 0;
+  border-radius: 999px;
+  padding: 11px 20px;
+  font: 600 14px/1 system-ui, sans-serif;
+  color: #0d1b2e;
+  background: #f2f0ea;
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.4);
+  cursor: pointer;
+  opacity: 0.94;
+}
+.bento-present-grant:hover { opacity: 1; }
+.bento-present-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 28px;
+  transform: translateX(-50%);
+  z-index: 100000;
+  padding: 10px 18px;
+  border-radius: 999px;
+  font: 500 13px/1.3 system-ui, sans-serif;
+  color: #f2f0ea;
+  background: rgb(18 26 40 / 0.92);
+  box-shadow: 0 6px 24px rgb(0 0 0 / 0.4);
+  max-width: 80vw;
+  text-align: center;
+}
+.bento-present-overlay .bento-el[data-link] { cursor: pointer; }
+.bento-present-overlay .bento-el[data-link]:hover {
+  outline: 2.5px solid var(--bento-accent, #f7a600);
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+/* chart option JSON editor */
+.ed-chart-json {
+  width: 100%;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 11px;
+  line-height: 1.45;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px;
+  color: var(--ink);
+}
+.ed-chart-json.ed-invalid { border-color: #c9302c; outline: 1px solid #c9302c; }
+
+/* --- help overlay + help button ------------------------------------------- */
+.ed-btn-help .ed-help-q { font-size: 15px; font-weight: 800; line-height: 1; }
+.ed-help-box { width: 700px; max-width: 92vw; }
+/* two hand-placed columns so the (now longer) list stays short vertically */
+.ed-help-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 30px; align-items: start; }
+.ed-help-col { min-width: 0; }
+.ed-help-sec { margin: 0 0 14px; }
+/* one column when there isn't room for two (narrow / phone) */
+@media (max-width: 560px) { .ed-help-cols { grid-template-columns: 1fr; } }
+.ed-help-sec h3 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--muted); margin: 0 0 6px;
+}
+.ed-help-row { display: grid; grid-template-columns: 128px 1fr; gap: 12px; align-items: baseline; padding: 3px 0; font-size: 13px; }
+.ed-help-row kbd {
+  font: 600 12px ui-monospace, SFMono-Regular, Menlo, monospace;
+  background: var(--chrome-2); border: 1px solid var(--line);
+  border-radius: 5px; padding: 2px 6px; color: var(--ink); white-space: nowrap; justify-self: start;
+}
+.ed-help-tips { margin: 4px 0 0; padding-inline-start: 18px; font-size: 13px; line-height: 1.5; color: var(--ink); }
+.ed-help-tips li { margin: 3px 0; }
+.ed-help-more { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line, rgba(30,42,58,0.12)); text-align: center; }
+.ed-help-more a { color: var(--accent); font-weight: 600; font-size: 13px; text-decoration: none; }
+.ed-help-more a:hover { text-decoration: underline; }
+
+/* --- live viewer (read-only collaborator) -------------------------------- */
+.ed-reader .ed-insert { display: none; }        /* no add-content tools */
+.ed-reader .moveable-control-box { display: none !important; }  /* no resize/move handles */
+.ed-reader-banner {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%); z-index: 60;
+  background: rgba(13,27,46,0.92); color: #fff; padding: 9px 18px; border-radius: 999px;
+  font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 9px;
+  box-shadow: 0 8px 26px rgba(0,0,0,0.32); backdrop-filter: blur(6px);
+}
+.ed-reader-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: #FF9E8A; flex: none;
+  animation: ed-reader-pulse 2s infinite;
+}
+@keyframes ed-reader-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,158,138,0.5); }
+  70% { box-shadow: 0 0 0 7px rgba(255,158,138,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,158,138,0); }
+}
+
+/* --- auto-save: recovery banner, saved tag, version history --------------- */
+.ed-recover {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4000;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #16273e;
+  color: #f2f0ea;
+  padding: 10px 14px;
+  border-radius: 10px;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.28);
+  font-size: 13px;
+  max-width: min(92vw, 560px);
+}
+.ed-recover .ed-btn { padding: 5px 12px; }
+.ed-autosaved {
+  font-size: 11px;
+  color: #6f8; /* set by theme below */
+  color: var(--muted);
+  opacity: 0;
+  transition: opacity 0.25s;
+  align-self: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.ed-autosaved.show { opacity: 0.85; }
+.ed-version-box { max-width: 460px; }
+.ed-version-list { display: flex; flex-direction: column; gap: 4px; margin: 8px 0; max-height: 320px; overflow-y: auto; }
+.ed-version-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
+  text-align: start;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--ink);
+}
+.ed-version-row:hover { background: var(--chrome-2); border-color: #c9d2df; }
+.ed-version-row .vh-tag { font-size: 11px; color: var(--muted); }
+.ed-version-row .vh-do { font-size: 12px; font-weight: 600; color: #c25a43; }
+
+/* --- visual chart editor -------------------------------------------------- */
+.ed-chart-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+  margin-bottom: 6px;
+  background: rgba(94, 118, 153, 0.1);
+  border: 1px solid rgba(94, 118, 153, 0.25);
+  border-radius: 8px;
+  font-size: 12px;
+  color: var(--ink);
+}
+.ed-chart-link span { flex: 1; min-width: 0; }
+.ed-chart-link .ed-btn { padding: 3px 9px; font-size: 12px; }
+.ed-series-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 0;
+}
+.ed-series-row .ed-series-name { flex: 1 1 auto; min-width: 0; }
+.ed-series-row select { flex: 0 0 auto; }
+.ed-series-row input[type='text'],
+.ed-series-row select {
+  height: 26px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 0 6px;
+  font-size: 12px;
+  background: var(--field);
+  color: var(--ink);
+}
+.ed-series-row input[type='color'] { flex: 0 0 auto; width: 26px; height: 26px; padding: 0; border: 1px solid var(--line); border-radius: 6px; background: none; }
+.ed-series-row .ed-pie-val { width: 62px; height: 26px; border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; font-size: 12px; }
+.ed-series-rm { flex: 0 0 auto; color: #9aa4b2; }
+.ed-series-rm:hover { color: #c9302c; }
+.ed-chart-add { margin: 4px 0 2px; }
+.ed-chart-add .ed-btn { width: 100%; justify-content: center; font-size: 12px; }
+.ed-axis-range { display: flex; gap: 6px; }
+.ed-axis-range input { width: 100%; height: 26px; border: 1px solid var(--line); border-radius: 6px; padding: 0 6px; font-size: 12px; }
+.ed-chart-grid-wrap { overflow-x: auto; margin: 2px 0; }
+.ed-chart-grid { border-collapse: collapse; width: 100%; }
+.ed-chart-grid th {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #7a8494;
+  text-align: start;
+  padding: 2px 4px;
+  white-space: nowrap;
+}
+.ed-chart-grid td { padding: 1px 2px; }
+.ed-chart-grid input {
+  width: 100%;
+  min-width: 52px;
+  height: 24px;
+  border: 1px solid var(--line);
+  border-radius: 5px;
+  padding: 0 5px;
+  font-size: 12px;
+  background: var(--field);
+  color: var(--ink);
+}
+.ed-chart-grid td:first-child input { font-weight: 600; }
+.ed-chart-grid .ed-btn-icon { padding: 2px; color: #9aa4b2; }
+.ed-chart-grid .ed-btn-icon:hover { color: #c9302c; }
+
+/* inline code spans inside text elements — editor, present and print alike */
+.bento-el-text code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.9em;
+  background: rgb(127 127 127 / 0.16);
+  padding: 0 0.28em;
+  border-radius: 3px;
+}
+
+/* arrange kit: one compact row per group — tiny label left, buttons right */
+/* arrange rows: caption + a shared 6-column track of near-fixed square
+   buttons — columns align vertically across Align/Space/Order, buttons
+   never stretch with the panel, spare width just rests at the row end */
+.ed-arrange-row {
+  display: grid;
+  grid-template-columns: 40px repeat(6, minmax(20px, 26px));
+  align-items: center;
+  gap: 3px;
+  margin: 3px 0;
+}
+.ed-arrange-row .ed-arrange-cap { width: auto; }
+.ed-arrange-row .ed-btn {
+  min-width: 0;
+  padding: 5px 0;
+  justify-content: center;
+}
+.ed-arrange-cap {
+  flex: none;
+  width: 46px;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+  opacity: 0.85;
+}
+.ed-arrange { display: flex; gap: 4px; margin-top: 0; }
+.ed-arrange-btn {
+  flex: 1 0 17%;
+  min-width: 30px;
+  padding: 4px 0;
+  font-size: 13px;
+  line-height: 1.1;
+}
+.ed-arrange-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* armed topbar tool (comment mode) */
+.ed-btn-armed { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent-ink); }
+.ed-btn-armed:hover { background: color-mix(in srgb, var(--accent) 30%, transparent); }
+
+/* collapsible panel sections */
+.ed-sec-toggle { cursor: pointer; user-select: none; position: relative; padding-inline-start: 14px; }
+.ed-sec-toggle::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 1px;
+  top: 50%;
+  width: 0; height: 0;
+  border-left: 5px solid currentColor;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transform: translateY(-50%) rotate(90deg);
+  transition: transform 0.12s ease;
+  opacity: 0.55;
+}
+.ed-sec-toggle.closed::before { transform: translateY(-50%); }
+.ed-sec-toggle:hover { color: var(--ink); }
+.ed-section-body { display: flex; flex-direction: column; }
+
+/* review comments: canvas markers, thread popover, thumb badge */
+.ed-comment-hl {
+  position: absolute;
+  pointer-events: none;
+  z-index: 11;
+}
+.ed-comment-hl.element {
+  border: 2px dashed var(--accent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+.ed-comment-chip {
+  position: absolute;
+  z-index: 12;
+  pointer-events: none;
+  background: var(--accent);
+  color: #3a2800;
+  font: 700 10.5px/1 -apple-system, 'Segoe UI', system-ui, sans-serif;
+  padding: 5px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 2px 8px rgb(20 30 45 / 0.25);
+}
+.ed-comment-hl.slide {
+  border: 2px dashed var(--accent);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--accent) 5%, transparent);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 5px 8px;
+  font: 700 9.5px/1 -apple-system, 'Segoe UI', system-ui, sans-serif;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+}
+.ed-comment-hl.pin {
+  width: 0; height: 0;
+  font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: var(--accent-ink);
+  white-space: nowrap;
+  padding-left: 12px;
+  padding-top: 2px;
+}
+.ed-comment-hl.pin::before {
+  content: '';
+  position: absolute;
+  left: -5px; top: -5px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2.5px solid var(--accent);
+  background: rgb(255 255 255 / 0.7);
+}
+@keyframes ed-cmt-pop {
+  0% { transform: scale(0.3); }
+  55% { transform: scale(1.35); }
+  100% { transform: scale(1); }
+}
+.ed-comment-marker.fresh { animation: ed-cmt-pop 0.45s ease-out; }
+
+.ed-comment-layer { position: absolute; inset: 0; pointer-events: none; z-index: 12; }
+.ed-comment-marker {
+  position: absolute;
+  pointer-events: auto;
+  width: 19px;
+  height: 19px;
+  border: none;
+  border-radius: 50% 50% 50% 3px;
+  background: var(--accent);
+  color: #3a2800;
+  font: 700 10px/19px inherit;
+  font-family: inherit;
+  text-align: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgb(20 30 45 / 0.25);
+}
+.ed-comment-marker.resolved { opacity: 0.35; }
+.ed-comment-marker:hover { transform: scale(1.15); }
+
+.ed-comment-pop {
+  position: fixed;
+  z-index: 210;
+  width: 300px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgb(15 23 36 / 0.18);
+  padding: 12px 14px;
+}
+.ed-comment-me {
+  float: right;
+  border: none;
+  background: none;
+  font: 600 10px/1.4 inherit;
+  font-family: inherit;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 0;
+}
+.ed-comment-me:hover { color: var(--accent-ink); }
+.ed-comment-pop-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.ed-comment-pop-head {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.ed-comment-entries { max-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+.ed-comment-entry b { font-size: 12.5px; }
+.ed-comment-entry .ed-comment-time { font-size: 11px; color: var(--muted); margin-inline-start: 5px; }
+.ed-comment-entry p { margin: 2px 0 0; font-size: 13px; line-height: 1.45; white-space: pre-wrap; }
+.ed-comment-reply {
+  width: 100%;
+  margin-top: 10px;
+  font: inherit;
+  font-size: 12.5px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 7px 9px;
+  resize: vertical;
+}
+.ed-comment-pop-foot { display: flex; gap: 6px; margin-top: 8px; }
+.ed-comment-pop-foot .ed-btn { border: 1px solid var(--line); flex: 1; justify-content: center; padding: 5px 6px; font-size: 12px; }
+
+.ed-thumb-cmt {
+  position: absolute;
+  bottom: 5px;
+  inset-inline-end: 5px;
+  z-index: 2;
+  width: 9px;
+  height: 9px;
+  border-radius: 50% 50% 50% 2px;
+  background: var(--accent);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+/* layout picker — popover over the New-slide button */
+.ed-layoutpick {
+  position: fixed;
+  z-index: 200;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: 0 12px 32px rgb(15 23 36 / 0.18);
+  padding: 12px 14px;
+  max-width: 420px;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+.ed-layoutpick-title {
+  font-size: 13px;
+  font-weight: 700;
+  margin: 2px 2px 10px;
+}
+.ed-layoutpick-h {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin: 4px 2px 8px;
+}
+.ed-layoutpick-h + .ed-layoutpick-h, .ed-layoutpick-grid + .ed-layoutpick-h { margin-top: 14px; }
+.ed-layoutpick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+  gap: 10px;
+}
+.ed-layoutpick-item {
+  position: relative;
+  cursor: pointer;
+  border: 2px solid var(--line);
+  border-radius: 8px;
+  padding: 3px;
+  text-align: center;
+  transition: border-color 0.12s ease;
+}
+.ed-layoutpick-item:hover { border-color: var(--accent); }
+.ed-layoutpick-name {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 110px;
+}
+.ed-layoutpick-del {
+  position: absolute;
+  top: -7px;
+  inset-inline-end: -7px;
+  width: 18px;
+  height: 18px;
+  border: none;
+  border-radius: 50%;
+  background: #c9302c;
+  color: #fff;
+  font-size: 10px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  display: none;
+}
+.ed-layoutpick-item:hover .ed-layoutpick-del { display: block; }
+
+/* slide-insertion gaps between sidebar thumbnails */
+.ed-insertgap {
+  flex: none;
+  width: 100%;
+  height: 12px;
+  margin: -11px 0; /* overlap the sidebar's flex gap so spacing stays as-is */
+  position: relative;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.12s ease;
+}
+.ed-insertgap:hover { opacity: 1; }
+.ed-insertgap::before {
+  content: '';
+  position: absolute;
+  left: 6%;
+  right: 6%;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  border-radius: 1px;
+  background: var(--blue);
+}
+.ed-insertgap-btn {
+  position: relative;
+  z-index: 1;
+  border: none;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* color + alpha pair, and gradient stop rows */
+.ed-coloralpha { display: flex; align-items: center; gap: 6px; }
+.ed-coloralpha input[type='number'] { width: 52px; }
+.ed-gradstop { display: flex; align-items: center; gap: 6px; }
+.ed-gradstop > input[type='number'] { width: 44px; }
+.ed-gradstop .ed-btn-icon { padding: 2px 6px; }
+
+/* resizable side panels — thin grab strips between panel and canvas */
+.ed-resizer {
+  flex: none;
+  width: 5px;
+  cursor: col-resize;
+  background: transparent;
+  transition: background .12s ease .08s;
+}
+.ed-resizer:hover, body.ed-col-resizing .ed-resizer { background: rgb(91 141 239 / 0.45); }
+body.ed-col-resizing { cursor: col-resize; user-select: none; }
+.ed-noanim { transition: none !important; }
+/* against a collapsed panel the strip only carries the reopen chevron */
+.ed-sidebar.ed-collapsed + .ed-resizer,
+.ed-resizer:has(+ .ed-props.ed-collapsed) { cursor: default; }
+.ed-sidebar.ed-collapsed + .ed-resizer:hover,
+.ed-resizer:has(+ .ed-props.ed-collapsed):hover { background: transparent; }
+
+/* collapsible side panels */
+.ed-sidebar, .ed-props { transition: width .18s ease, padding .18s ease; }
+.ed-sidebar.ed-collapsed, .ed-props.ed-collapsed {
+  width: 0;
+  min-width: 0; /* flex items floor at min-content without this */
+  padding-left: 0;
+  padding-right: 0;
+  border-width: 0;
+  overflow: hidden;
+}
+
+/* interactive states read as secondary in Reveal's overview grid
+   (!important: Reveal positions overview sections with inline styles) */
+.bento-present-overlay .reveal.overview section[data-bento-state] {
+  opacity: 0.35 !important;
+  outline: 2px dashed rgb(255 255 255 / 0.35);
+  outline-offset: -2px;
+}
+
+/* PDF export: each linear slide is one exact 1600×900 page */
+#bento-print { display: none; }
+@media print {
+  #app, #bento-splash, .bento-present-overlay, .ed-toast { display: none !important; }
+  #bento-print { display: block; }
+  @page { size: 1600px 900px; margin: 0; }
+  #bento-print .bp-page {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    width: 1600px;
+    height: 900px;
+    overflow: hidden;
+    page-break-after: always;
+    break-after: page;
+  }
+}
+
+/* moveable accents */
+.moveable-control-box {
+  --moveable-color: var(--blue);
+}
+
+/* ————— speaker view popup ————— */
+.bento-speaker {
+  margin: 0;
+  background: #14181d;
+  color: #e9edf3;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+/* idle placeholder shown before/after a presentation drives the notes window */
+.sv-idle {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
+  padding: 8vw;
+  box-sizing: border-box;
+}
+.sv-idle-title { font-size: 28px; font-weight: 700; color: #e9edf3; }
+.sv-idle-msg { max-width: 30ch; margin: 0; font-size: 16px; line-height: 1.6; color: #9fb0c3; }
+.sv-top { display: flex; align-items: baseline; gap: 22px; padding: 14px 22px 10px; }
+.sv-timer {
+  font: 700 30px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+}
+.sv-timer:hover { color: #f7a600; }
+.sv-clock { font-size: 15px; color: #9fb0c3; }
+.sv-count { font-size: 15px; color: #9fb0c3; font-variant-numeric: tabular-nums; }
+.sv-ctrls { margin-left: auto; display: flex; align-items: center; gap: 6px; }
+.sv-btn {
+  width: 34px;
+  height: 30px;
+  border-radius: 7px;
+  border: 1px solid #2b333f;
+  background: #1e242c;
+  color: #cdd6e2;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sv-btn:hover:not([disabled]) { background: #2a323c; color: #fff; }
+.sv-btn[disabled] { opacity: 0.35; cursor: default; }
+.sv-btn.active { background: #f7a600; border-color: #f7a600; color: #14181d; }
+.sv-main { display: flex; gap: 22px; padding: 14px 22px; align-items: flex-start; flex: 1; min-height: 0; }
+.sv-frame {
+  position: relative;
+  overflow: hidden;
+  background: #000;
+  border-radius: 8px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / 0.5);
+  flex: none;
+}
+.sv-frame.end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5b6472;
+  font-size: 14px;
+  background: #1a2029;
+}
+.sv-side { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.sv-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9fb0c3;
+  margin-bottom: 6px;
+}
+.sv-notes-wrap { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+.sv-notes {
+  flex: 1;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  font-size: 16px;
+  line-height: 1.65;
+  color: #e9edf3;
+  user-select: text;
+}
+
+/* --- presenter view: thumbnail rail + all-slides grid ----------------- */
+.sv-rail {
+  flex: none;
+  display: flex;
+  gap: 10px;
+  padding: 12px 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  border-top: 1px solid #232a33;
+  background: #10141a;
+}
+.sv-thumb {
+  position: relative;
+  flex: none;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  background: #000;
+  cursor: pointer;
+  line-height: 0;
+  overflow: hidden;
+}
+.sv-thumb:hover { border-color: #4a5a72; }
+.sv-thumb.current { border-color: #f7a600; }
+.sv-thumb .sv-frame { box-shadow: none; border-radius: 0; }
+.sv-thumb-n {
+  position: absolute;
+  left: 4px;
+  bottom: 4px;
+  min-width: 16px;
+  padding: 1px 5px;
+  border-radius: 9px;
+  background: rgb(0 0 0 / 0.62);
+  color: #e9edf3;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+}
+.sv-thumb.current .sv-thumb-n { background: #f7a600; color: #14181d; }
+.sv-grid {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  background: rgb(9 12 16 / 0.94);
+  overflow-y: auto;
+  padding: 28px;
+}
+.sv-grid[hidden] { display: none; }
+.sv-grid-inner {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+  justify-items: center;
+}
+/* line / curve / connector endpoint handles */
+.ed-le-anchor { transition: r 0.08s ease; }
+.ed-le-anchor:hover { fill: #eaf1ff; }
+
+/* audience blackout — a plain black cover over the slides overlay */
+.bento-blackout {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  background: #000;
+}
+.bento-blackout[hidden] { display: none; }
+
+/* transient confirmation pill in present mode (e.g. Reduced motion on/off) */
+.bento-present-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+  transform: translateX(-50%);
+  z-index: 61;
+  background: rgb(20 30 45 / 0.82);
+  color: #fff;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.bento-present-toast.show { opacity: 1; }
+
+/* --- live collaboration ----------------------------------------------- */
+.ed-avatars {
+  display: flex;
+  align-items: center;
+  margin-inline: 2px 6px;
+  flex-shrink: 0;
+}
+.ed-avatar {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  color: #16273e;
+  font: 700 11px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.35);
+  /* overlap into a coin-stack so N avatars stay bounded in width */
+  margin-inline-start: -7px;
+}
+.ed-avatars .ed-avatar:first-child {
+  margin-inline-start: 0;
+}
+.ed-avatar:hover {
+  transform: translateY(-1px);
+  z-index: 1;
+}
+/* the "+N" overflow pill — widens to fit the count, opens the Live panel */
+.ed-avatar-more {
+  width: auto;
+  min-width: 24px;
+  padding: 0 6px;
+  border-radius: 11px;
+  background: #4a5a72;
+  color: #fff;
+  font-size: 10.5px;
+}
+.ed-remote-layer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 40;
+}
+.ed-remote-box {
+  position: absolute;
+  border: 2px solid;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.ed-remote-box.ed-remote-editing {
+  border-style: dashed;
+}
+.ed-remote-tag {
+  position: absolute;
+  top: -22px;
+  left: -2px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  color: #16273e;
+  font: 600 11px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
+}
+.ed-share-pop {
+  min-width: 250px;
+  max-width: 290px;
+  padding: 12px;
+  gap: 7px;
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+}
+.ed-share-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.ed-share-note {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--muted);
+}
+.ed-share-status {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #b8860b;
+}
+.ed-share-status.ok { color: #2e8b57; }
+.ed-share-btn {
+  justify-content: center;
+  font-size: 12.5px;
+  padding: 6px 10px;
+  white-space: normal;
+  text-align: center;
+  line-height: 1.35;
+}
+/* share actions read as BUTTONS at rest, not hover-reveal text */
+.ed-share-btn:not(.ed-btn-primary) {
+  background: var(--chrome);
+  border: 1px solid var(--line);
+}
+.ed-share-btn:not(.ed-btn-primary):hover { background: var(--chrome-2); }
+.ed-share-btn { width: 100%; justify-content: flex-start; text-align: start; }
+.ed-share-btn svg { flex: none; }
+
+/* divider usable in any dropdown menu */
+.ed-menu-sep { height: 1px; background: var(--line); margin: 3px 2px; }
+.ed-lang-on { font-weight: 700; }
+.ed-lang-on::after { content: ' ✓'; color: var(--accent-ink); }
+
+/* Save is a split button: [ Save |▾] one visual unit. The caret button is
+   NESTED inside the .ed-dropdown wrapper, so stretch through the wrapper. */
+.ed-split { display: inline-flex; align-items: stretch; }
+.ed-split > .ed-btn:first-child {
+  border-start-start-radius: 8px;
+  border-end-start-radius: 8px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border: 1px solid var(--line);
+  border-inline-end: none;
+  background: var(--chrome);
+}
+.ed-split .ed-dropdown { display: flex; align-items: stretch; }
+.ed-split-caret {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-start-end-radius: 8px;
+  border-end-end-radius: 8px;
+  border: 1px solid var(--line);
+  background: var(--chrome);
+  padding: 6px 7px;
+}
+.ed-split .ed-btn:hover { background: var(--chrome-2); }
+.ed-caret { font-size: 10px; line-height: 1; }
+
+/* quiet divider between share actions and advanced session controls */
+.ed-share-sep { height: 1px; background: var(--line); margin: 2px 0; }
+
+/* bottom-end cluster: [Slideshow pill] [zoom pill] */
+.ed-corner-br {
+  position: absolute;
+  /* the present/zoom cluster sits in the corner most likely to be clipped.
+     Kept LOGICAL (inset-inline-end, not right) so the cluster still lands in
+     the correct corner under RTL — ar/fa/he/ur ship as language packs. */
+  inset-inline-end: max(14px, env(safe-area-inset-right), var(--tray-safe-right, 0px));
+  bottom: max(14px, env(safe-area-inset-bottom), var(--tray-safe-bottom, 0px));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 11;
+}
+.ed-corner-br .ed-zoombar { position: static; }
+.ed-present-pill {
+  display: inline-flex;
+  align-items: stretch;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: 0 4px 14px rgb(20 30 45 / 0.10);
+  overflow: visible;
+}
+/* a neon coral "runner" light chases around the pill's edge — as a first-run
+   nudge to show how to start a show, AND on hover as an ongoing affordance. A
+   conic-gradient ring (masked to just the border with the padding-box exclude
+   trick) rotates via @property --ed-runner-a, so a bright coral comet with a
+   hot tip runs the perimeter; a drop-shadow gives it the neon glow.
+   First run: a few laps then it fades (JS drops .ed-hint-pulse when the fade
+   ends, so hover takes over cleanly). Hover: loops while the pointer's over,
+   then fades out on leave.
+   The runner layer is ALWAYS present (invisible at rest) so its opacity can
+   transition out on mouse-leave — a disappearing ::after can't fade. Its spin
+   is animation-play-state: paused while idle, so there's no cost when it isn't
+   showing, and on leave it freezes in place (paused holds the angle) and fades
+   rather than snapping back to 0deg. */
+@property --ed-runner-a {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+.ed-present-pill { position: relative; }
+.ed-present-pill::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 3px;
+  background: conic-gradient(from var(--ed-runner-a),      /* peach = wordmark slash #FF9E8A */
+    rgb(255 158 138 / 0)    0deg,
+    rgb(255 158 138 / 0)    225deg,
+    rgb(255 158 138 / 0.55) 300deg,
+    rgb(255 184 168 / 1)    345deg,
+    rgb(255 244 238 / 1)    357deg,
+    rgb(255 158 138 / 0)    360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  filter: drop-shadow(0 0 2px rgb(255 170 152 / 0.95)) drop-shadow(0 0 7px rgb(255 158 138 / 0.6));
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease;           /* fade OUT on mouse-leave */
+  animation: ed-runner 1.3s linear infinite;
+  animation-play-state: paused;            /* idle until hover/hint runs it */
+}
+.ed-present-pill:hover::after {
+  opacity: 1;
+  transition: opacity 0.15s ease;          /* fade IN quick */
+  animation-play-state: running;
+}
+.ed-present-pill.ed-hint-pulse::after {
+  animation: ed-runner 1.3s linear 5, ed-runner-fade 6.5s ease-out 1 forwards;
+}
+@keyframes ed-runner { to { --ed-runner-a: 360deg; } }
+@keyframes ed-runner-fade { 0% { opacity: 0; } 10%, 86% { opacity: 1; } 100% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .ed-present-pill::after { transition: none; }
+  .ed-present-pill.ed-hint-pulse::after,
+  .ed-present-pill:hover::after {
+    animation: none;
+    background: rgb(255 158 138 / 0.85);
+    opacity: 1;
+  }
+}
+.ed-present-pill .ed-pill-main {
+  border-start-start-radius: 999px;
+  border-end-start-radius: 999px;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  padding-block: 6px;
+  padding-inline: 14px 10px;
+  font-weight: 600;
+}
+.ed-present-pill .ed-pill-caret {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+  border-start-end-radius: 999px;
+  border-end-end-radius: 999px;
+  border-inline-start: 1px solid var(--line);
+  padding-block: 6px;
+  padding-inline: 7px 10px;
+}
+.ed-present-pill .ed-btn:hover { background: var(--chrome); }
+/* its menu drops UP (the pill sits at the bottom edge) */
+.ed-present-pill .ed-menu { top: auto; bottom: calc(100% + 6px); inset-inline-start: auto; inset-inline-end: 0; }
+
+.ed-share-peers { display: flex; flex-direction: column; gap: 2px; max-height: 240px; overflow-y: auto; }
+.ed-share-me {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 4px 6px;
+  border-radius: 7px;
+  background: var(--chrome);
+  font-size: 12.5px;
+}
+.ed-share-me .who { font-weight: 600; }
+.ed-share-me .where { margin-inline-start: auto; color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; }
+.ed-share-peer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 6px;
+  border: none;
+  background: none;
+  border-radius: 6px;
+  font-size: 12.5px;
+  color: var(--ink);
+  cursor: pointer;
+  text-align: start;
+  width: 100%;
+}
+.ed-share-peer:hover { background: rgba(94, 118, 153, 0.1); }
+.ed-share-peer .dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex: none;
+}
+.ed-share-peer .who { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ed-share-peer .where { color: var(--muted); font-size: 11.5px; flex: none; }
+.ed-share-peer .kick {
+  flex: none;
+  width: 18px;
+  height: 18px;
+  line-height: 18px;
+  text-align: center;
+  border-radius: 5px;
+  color: #a0323c;
+  font-size: 12px;
+}
+.ed-share-peer .kick:hover { background: rgba(160, 50, 60, 0.12); }
+/* Live button status dot: always present — grey when dormant (not sharing),
+   amber+pulsing while connecting, green when live. The dot makes the on/off
+   state legible at a glance instead of the button looking inert. */
+.ed-btn-share,
+.ed-btn-live { position: relative; }
+.ed-btn-share::after,
+.ed-btn-live::after,
+.ed-btn-connecting::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  inset-inline-end: 3px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #9aa4b2; /* dormant / not sharing */
+}
+.ed-btn-share.ed-btn-connecting::after,
+.ed-btn-connecting::after { background: #d9a13b; animation: ed-live-pulse 1.1s ease-in-out infinite; }
+.ed-btn-share.ed-btn-live::after,
+.ed-btn-live::after { background: #34a866; animation: none; }
+@keyframes ed-live-pulse { 0%, 100% { opacity: 1 } 50% { opacity: 0.3 } }
+
+/* about rows wrap instead of overflowing the dialog */
+.ed-about-row {
+  flex-wrap: wrap;
+}
+.ed-about-row .ed-btn {
+  max-width: 100%;
+  white-space: normal;
+  text-align: start;
+}
+.ed-about-meta-wrap { flex-direction: column; align-items: stretch; gap: 5px; }
+.ed-about-h { font-weight: 700; font-size: 13px; margin: 2px 0; }
+.ed-about-meta { display: flex; align-items: center; gap: 8px; }
+.ed-about-meta label { flex: 0 0 80px; font-size: 12px; color: var(--ink-2); }
+.ed-about-meta input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  font-size: 13px;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--field);
+}
+
+/* collaborate popover: your-name field */
+.ed-share-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.ed-share-name input {
+  flex: 1;
+  min-width: 0;
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 12.5px;
+}
+
+/* --- responsive topbar: labels give way, never a scrollbar ----------------
+   The tiers are CLASSES, not width breakpoints. editor.ts fitTopbar()
+   MEASURES the bar and steps down a tier while it still overflows. Width
+   breakpoints were wrong here because the same buttons need a different
+   amount of room at the same viewport width (OS text scaling, browser zoom,
+   wider translations, the update chip or the avatar strip appearing), and
+   every one of those cases used to clip the end of the bar.
+   ed-bar-compact hides button labels, ed-bar-tight drops the wordmark,
+   ed-bar-fold moves buttons into menus (applyPhoneChrome). */
+.ed-topbar { min-width: 0; }
+.ed-topbar .ed-group { flex-shrink: 0; }
+.ed-logo { flex-shrink: 0; }
+.ed-title { flex: 0 1 220px; min-width: 48px; }
+.ed-topbar.ed-bar-compact .ed-btn > span { display: none; } /* icons + tooltips take over */
+.ed-topbar.ed-bar-compact .ed-btn.ed-btn-update > span { display: inline; } /* version chip is signal */
+/* …but NEVER inside an open dropdown/menu — those items are text; hiding
+   their labels left icon-only mystery menus on phones. */
+.ed-topbar.ed-bar-compact .ed-menu .ed-btn > span,
+.ed-topbar.ed-bar-compact .ed-menu button > span { display: inline; }
+/* keep the safe-area insets — a bare padding here would undo them */
+.ed-topbar.ed-bar-compact {
+  gap: 6px;
+  padding: max(8px, env(safe-area-inset-top), var(--tray-safe-top, 0px)) max(8px, env(safe-area-inset-right), var(--tray-safe-right, 0px))
+           8px max(8px, env(safe-area-inset-left), var(--tray-safe-left, 0px));
+}
+/* Narrow HORIZONTALLY only: 14 -> 6 reclaims 16px of the width a cramped bar is
+   short of, which is what this tier is for. The vertical padding stays at 8 —
+   shrinking it saved 4px of canvas nobody asked for and made the toolbar
+   visibly change height as a window was dragged. The tighter vertical padding
+   lives in the phone rule below, where 44px touch targets already set the
+   height and small-screen space actually is scarce. */
+.ed-topbar.ed-bar-tight {
+  gap: 4px;
+  padding: max(8px, env(safe-area-inset-top), var(--tray-safe-top, 0px)) max(6px, env(safe-area-inset-right), var(--tray-safe-right, 0px))
+           8px max(6px, env(safe-area-inset-left), var(--tray-safe-left, 0px));
+}
+.ed-topbar.ed-bar-tight .ed-logo > b { display: none; } /* mark only — the icon is the brand */
+
+/* --- fold: the bar cannot fit, so most of it moves into menus -------------
+   Hiding labels is not enough — 17 icon buttons at 36px plus gaps is an
+   irreducible ~684px floor. When even the tight tier overflows (every phone,
+   and a desktop window under heavy zoom or huge system text) fitTopbar adds
+   ed-bar-fold and applyPhoneChrome() REPARENTS the low-priority controls
+   into "＋" and "⋯" dropdowns, leaving: logo · title · ☰ · ＋ · undo · format ·
+   save · ⋯ . Labels come back inside menus via the compact rule above. */
+/* the phone-only controls exist in the DOM at every width; only the fold class
+   shows them, so applyPhoneChrome never has to create or destroy anything */
+.ed-phone-only { display: none; }
+.ed-topbar.ed-bar-fold .ed-phone-only { display: inline-flex; }
+/* Save stays one tap; its save-AS caret does not fit beside the fold's small
+   set of buttons and is the least-used half. The list it opens is not lost —
+   editor.ts appends it to the bottom of ⋯ while the fold is on. */
+.ed-topbar.ed-bar-fold .ed-split-caret { display: none; }
+/* ⋯ carries the demoted buttons AND that list, so it can outgrow the
+   screen in BOTH directions.
+   Down: without a bound it runs off the bottom, and a dropdown is absolutely
+   positioned, so nothing else can scroll it back into reach.
+   Sideways: these menus open from buttons in the right half of a 402px bar,
+   and a start-anchored menu grows AWAY from the screen — ⋯ sits at x≈374, so
+   even the old six short rows were partly cut off. Anchoring to the end grows
+   them inward instead. */
+.ed-topbar.ed-bar-fold .ed-menu {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  max-width: calc(100vw - 16px);
+  max-height: calc(100dvh - 96px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* --- phones proper: viewport-scoped chrome that is about TOUCH and small
+   screens, not about whether the bar fits, so it stays a media query */
+@media (max-width: 700px) {
+  /* 44px targets already set the bar's height here, so the tighter vertical
+     padding costs nothing visible and buys back 4px where space is scarcest.
+     `.ed-bar-tight` is listed explicitly: a media query adds NO specificity, so
+     a bare `.ed-topbar` here (0,1,0) loses to the tier class (0,2,0) and the
+     phone bar silently keeps the desktop padding. Measured — it did. */
+  .ed-topbar,
+  .ed-topbar.ed-bar-tight {
+    padding: max(6px, env(safe-area-inset-top), var(--tray-safe-top, 0px)) max(6px, env(safe-area-inset-right), var(--tray-safe-right, 0px))
+             6px max(6px, env(safe-area-inset-left), var(--tray-safe-left, 0px));
+  }
+  /* HIG touch targets — a 36px icon is a mis-tap on glass */
+  .ed-topbar .ed-btn { min-width: 44px; min-height: 44px; justify-content: center; }
+  .ed-topbar .ed-menu .ed-btn { min-width: 0; } /* menu rows are text, not targets */
+  .ed-title { flex: 0 1 90px; }
+
+  /* Panels become OVERLAY DRAWERS. As flex siblings the 188px sidebar left a
+     214px canvas on a 402px screen — the thing you are editing became the
+     smallest thing on screen. */
+  .ed-sidebar, .ed-props {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 40;
+    box-shadow: 0 0 40px rgb(15 23 36 / 0.18);
+    background: var(--chrome);
+  }
+  .ed-sidebar { left: 0; }
+  .ed-props { right: 0; }
+  .ed-sidebar.ed-collapsed, .ed-props.ed-collapsed { box-shadow: none; }
+  .ed-main { position: relative; }
+  /* the 16px resizer chevrons are replaced by real buttons in the bar */
+  .ed-panel-toggle { display: none; }
+  .ed-title { min-width: 0; }
+}
+
+/* panel collapse chevrons live ON the resizer strips, not in the topbar */
+.ed-resizer { position: relative; }
+.ed-panel-toggle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 44px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: #5d6b80;
+  font-size: 11px;
+  line-height: 1;
+  padding: 0;
+  cursor: pointer;
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(20, 30, 45, 0.12);
+}
+.ed-panel-toggle:hover { color: var(--ink); border-color: #b9c3d2; }
+/* menus that hang off a topbar control at the END of the bar open toward the
+   bar's start, so they can never overflow the window edge — in either
+   direction (the language menu sets the same anchoring from JS). */
+.ed-save-menu, .ed-lang-menu {
+  inset-inline-end: 0;
+  inset-inline-start: auto;
+}
+.ed-save-menu { min-width: 190px; }
+.ed-save-menu .ed-btn { font-size: 12.5px; }
+/* when the adjacent panel is collapsed the chevron pins fully on-screen,
+   docked to the edge like a drawer pull */
+.ed-sidebar.ed-collapsed + .ed-resizer .ed-panel-toggle {
+  inset-inline-start: 0;
+  transform: translateY(-50%);
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+.ed-resizer:has(+ .ed-props.ed-collapsed) .ed-panel-toggle {
+  inset-inline-start: auto;
+  inset-inline-end: 0;
+  transform: translateY(-50%);
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+/* floating present buttons, bottom-LEFT of the work area (zoombar owns the
+   right corner); side by side so neither ever covers the slide above */
+
+
+/* right panel: no horizontal scrollbar, ever */
+.ed-props {
+  overflow-x: hidden;
+  scrollbar-gutter: stable;
+}
+.ed-props .ed-row { flex-wrap: wrap; }
+.ed-props input[type='number'] { min-width: 0; }
+.ed-props select { max-width: 100%; min-width: 0; }
+.ed-props input[type='text'] { min-width: 0; max-width: 100%; }
+
+/* ————— password gate (encrypted files) + read-only player ————— */
+
+.ed-pwgate, .ed-player {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  background: #0D1B2E;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(182 193 210 / 0.92);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  text-align: center;
+}
+.ed-pwcard, .ed-playercard {
+  max-width: 380px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: center;
+}
+.ed-pwmark { font-size: 40px; }
+.ed-pwcard h1, .ed-playercard h1 {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.ed-pwcard p, .ed-playercard p { font-size: 14px; line-height: 1.5; }
+.ed-pwcard input {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgb(255 255 255 / 0.25);
+  background: rgb(255 255 255 / 0.06);
+  color: #fff;
+  font-size: 15px;
+  text-align: center;
+}
+.ed-pwcard button, .ed-playercard button {
+  padding: 12px 26px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  color: #0D1B2E;
+  background: linear-gradient(180deg, #FFB29B, #ED8266);
+}
+.ed-playercard button.ed-playcopy {
+  background: none;
+  color: #fff;
+  border: 1px solid rgb(255 255 255 / 0.3);
+}
+.ed-pwerr { color: #FF8A7A; font-size: 13px; min-height: 18px; }
+
+/* password dialog (set/change) */
+dialog.ed-pwdialog {
+  border: 0;
+  border-radius: 14px;
+  box-shadow: 0 18px 50px rgb(15 23 36 / 0.3);
+  padding: 20px;
+  width: 340px;
+  font-size: 13px;
+  font-family: inherit;
+}
+dialog.ed-pwdialog::backdrop { background: rgb(15 23 36 / 0.38); }
+dialog.ed-pwdialog h2 { font-size: 15px; margin-bottom: 8px; }
+dialog.ed-pwdialog p { color: #667; line-height: 1.5; margin-bottom: 10px; }
+dialog.ed-pwdialog label {
+  display: block;
+  margin: 8px 0 2px;
+  font-weight: 600;
+  color: #334;
+}
+dialog.ed-pwdialog input {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  border: 1px solid #ccd;
+  border-radius: 8px;
+  font-size: 14px;
+}
+dialog.ed-pwdialog .ed-pwerr { color: #C33; }
+.ed-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+.ed-dialog-actions button {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #ccd;
+  background: var(--surface);
+  font-weight: 600;
+  cursor: pointer;
+}
+.ed-dialog-actions button.ed-primary {
+  border: 0;
+  color: #0D1B2E;
+  background: linear-gradient(180deg, #FFB29B, #ED8266);
+}
+
+/* ————— tables ————— */
+.bento-el-table { overflow: visible; }
+.bento-el-table .bento-cell-inner { min-height: 1em; }
+/* editor-only affordances */
+.ed-root .bento-el-table td { cursor: text; }
+.bento-col-handle { border-radius: 3px; }
+.bento-col-handle:hover { background: rgba(94, 118, 153, 0.35); }
+.bento-el-table.bento-editing td { cursor: text; }
+
+/* table properties: steppers + toggle */
+.ed-stepper { display: inline-flex; align-items: center; gap: 6px; }
+.ed-stepper .ed-btn-icon { width: 24px; height: 24px; line-height: 1; font-size: 15px; padding: 0; }
+.ed-stepper-val { min-width: 20px; text-align: center; font-variant-numeric: tabular-nums; font-size: 13px; }
+input.ed-toggle { width: 16px; height: 16px; accent-color: #5E7699; cursor: pointer; }
+
+/* Languages dialog: built-in vs installed packs vs available to add. */
+.ed-lang-manage { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 2px; }
+.ed-lang-sec {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--muted); margin: 12px 0 4px;
+}
+.ed-lang-row {
+  display: flex; align-items: center; gap: 10px; justify-content: space-between;
+  padding: 7px 0; border-bottom: 1px solid var(--line);
+}
+.ed-lang-row:last-child { border-bottom: 0; }
+.ed-lang-txt { display: flex; flex-direction: column; min-width: 0; }
+.ed-lang-txt b { font-size: 13px; font-weight: 600; }
+.ed-lang-txt span { font-size: 11.5px; color: var(--muted); }
+.ed-lang-blurb { font-size: 11.5px; color: var(--muted); line-height: 1.5; margin: -2px 0 6px; }
+.ed-lang-search {
+  width: 100%; margin: 4px 0 6px; padding: 7px 10px; font-size: 13px;
+  border: 1px solid var(--line); border-radius: 8px; background: var(--bg);
+}
+.ed-lang-scroll {
+  max-height: 240px; overflow-y: auto;
+  /* Keep the row's action button clear of the scrollbar — without this the
+     Add button sits flush against it. The stable gutter stops the list
+     shifting sideways when the bar appears or goes. */
+  padding-right: 12px; scrollbar-gutter: stable;
+}
+.ed-lang-acts { display: flex; gap: 6px; flex: 0 0 auto; }
+.ed-lang-acts .ed-btn { white-space: nowrap; }
+.ed-lang-warn {
+  font-size: 11.5px; line-height: 1.5; color: var(--muted);
+  background: var(--bg); border-left: 2px solid var(--line);
+  padding: 5px 8px; margin: 0 0 6px; border-radius: 0 5px 5px 0;
+}
+
+/* ————— RTL chrome: the marks that don't flip themselves ————————————————————
+   Logical properties turn the LAYOUT around on their own. These are the few
+   glyphs that encode a direction in their SHAPE, so they have to be flipped by
+   hand. Every selector here is chrome — none of it can reach a slide, which
+   stays LTR-pinned (see the top of this file).
+
+   The speaker view (.sv-*) is deliberately absent: it is a separate window
+   sitting beside the projected show, and it never carries a dir attribute. */
+
+/* Accordion disclosure: a CSS triangle drawn with border-left, pointing "right"
+   at rest. Open (rotated 90°) points down either way; closed must point the way
+   the panel reads. */
+[dir="rtl"] .ed-sec-toggle.closed::before { transform: translateY(-50%) rotate(180deg); }
+
+/* Undo/redo arrows curl back toward where the text came from. */
+[dir="rtl"] .ed-group-history .ed-btn svg { transform: scaleX(-1); }
+
+/* The comment thread's "you are <name>" link rides the far edge of the head. */
+[dir="rtl"] .ed-comment-me { float: left; }
+
+/* Coordinates, sizes and JSON are LTR content whatever the interface language:
+   a base-RTL context renders "-5" as "5-" and reorders a JSON line's brackets.
+   Panel prose and every text field the user writes words into are untouched. */
+[dir="rtl"] .ed-row input[type='number'],
+[dir="rtl"] .ed-mini input,
+[dir="rtl"] .ed-axis-range input,
+[dir="rtl"] .ed-about-json,
+[dir="rtl"] .ed-chart-json {
+  direction: ltr;
+}
+</style><style type="text/css" data-vite-dev-id="/app/slides/node_modules/reveal.js/dist/reveal.css">/**
+ * reveal.js 5.2.0
+ * https://revealjs.com
+ * MIT licensed
+ *
+ * Copyright (C) 2011-2024 Hakim El Hattab, https://hakim.se
+ */
+
+.reveal .r-stretch,.reveal .stretch{max-width:none;max-height:none}.reveal pre.r-stretch code,.reveal pre.stretch code{height:100%;max-height:100%;box-sizing:border-box}.reveal .r-fit-text{display:inline-block;white-space:nowrap}.reveal .r-stack{display:grid;grid-template-rows:100%}.reveal .r-stack>*{grid-area:1/1;margin:auto}.reveal .r-hstack,.reveal .r-vstack{display:flex}.reveal .r-hstack img,.reveal .r-hstack video,.reveal .r-vstack img,.reveal .r-vstack video{min-width:0;min-height:0;object-fit:contain}.reveal .r-vstack{flex-direction:column;align-items:center;justify-content:center}.reveal .r-hstack{flex-direction:row;align-items:center;justify-content:center}.reveal .items-stretch{align-items:stretch}.reveal .items-start{align-items:flex-start}.reveal .items-center{align-items:center}.reveal .items-end{align-items:flex-end}.reveal .justify-between{justify-content:space-between}.reveal .justify-around{justify-content:space-around}.reveal .justify-start{justify-content:flex-start}.reveal .justify-center{justify-content:center}.reveal .justify-end{justify-content:flex-end}html.reveal-full-page{width:100%;height:100%;height:100vh;height:calc(var(--vh,1vh) * 100);height:100dvh;overflow:hidden}.reveal-viewport{height:100%;overflow:hidden;position:relative;line-height:1;margin:0;background-color:#fff;color:#000;--r-controls-spacing:12px;--r-overlay-header-height:40px;--r-overlay-margin:0px;--r-overlay-padding:6px;--r-overlay-gap:5px}@media screen and (max-width:1024px),(max-height:768px){.reveal-viewport{--r-overlay-header-height:26px}}.reveal-viewport:fullscreen{top:0!important;left:0!important;width:100%!important;height:100%!important;transform:none!important}.reveal .fragment{transition:all .2s ease}.reveal .fragment:not(.custom){opacity:0;visibility:hidden;will-change:opacity}.reveal .fragment.visible{opacity:1;visibility:inherit}.reveal .fragment.disabled{transition:none}.reveal .fragment.grow{opacity:1;visibility:inherit}.reveal .fragment.grow.visible{transform:scale(1.3)}.reveal .fragment.shrink{opacity:1;visibility:inherit}.reveal .fragment.shrink.visible{transform:scale(.7)}.reveal .fragment.zoom-in{transform:scale(.1)}.reveal .fragment.zoom-in.visible{transform:none}.reveal .fragment.fade-out{opacity:1;visibility:inherit}.reveal .fragment.fade-out.visible{opacity:0;visibility:hidden}.reveal .fragment.semi-fade-out{opacity:1;visibility:inherit}.reveal .fragment.semi-fade-out.visible{opacity:.5;visibility:inherit}.reveal .fragment.strike{opacity:1;visibility:inherit}.reveal .fragment.strike.visible{text-decoration:line-through}.reveal .fragment.fade-up{transform:translate(0,40px)}.reveal .fragment.fade-up.visible{transform:translate(0,0)}.reveal .fragment.fade-down{transform:translate(0,-40px)}.reveal .fragment.fade-down.visible{transform:translate(0,0)}.reveal .fragment.fade-right{transform:translate(-40px,0)}.reveal .fragment.fade-right.visible{transform:translate(0,0)}.reveal .fragment.fade-left{transform:translate(40px,0)}.reveal .fragment.fade-left.visible{transform:translate(0,0)}.reveal .fragment.current-visible,.reveal .fragment.fade-in-then-out{opacity:0;visibility:hidden}.reveal .fragment.current-visible.current-fragment,.reveal .fragment.fade-in-then-out.current-fragment{opacity:1;visibility:inherit}.reveal .fragment.fade-in-then-semi-out{opacity:0;visibility:hidden}.reveal .fragment.fade-in-then-semi-out.visible{opacity:.5;visibility:inherit}.reveal .fragment.fade-in-then-semi-out.current-fragment{opacity:1;visibility:inherit}.reveal .fragment.highlight-blue,.reveal .fragment.highlight-current-blue,.reveal .fragment.highlight-current-green,.reveal .fragment.highlight-current-red,.reveal .fragment.highlight-green,.reveal .fragment.highlight-red{opacity:1;visibility:inherit}.reveal .fragment.highlight-red.visible{color:#ff2c2d}.reveal .fragment.highlight-green.visible{color:#17ff2e}.reveal .fragment.highlight-blue.visible{color:#1b91ff}.reveal .fragment.highlight-current-red.current-fragment{color:#ff2c2d}.reveal .fragment.highlight-current-green.current-fragment{color:#17ff2e}.reveal .fragment.highlight-current-blue.current-fragment{color:#1b91ff}.reveal:after{content:"";font-style:italic}.reveal iframe{z-index:1}.reveal a{position:relative}@keyframes bounce-right{0%,10%,25%,40%,50%{transform:translateX(0)}20%{transform:translateX(10px)}30%{transform:translateX(-5px)}}@keyframes bounce-left{0%,10%,25%,40%,50%{transform:translateX(0)}20%{transform:translateX(-10px)}30%{transform:translateX(5px)}}@keyframes bounce-down{0%,10%,25%,40%,50%{transform:translateY(0)}20%{transform:translateY(10px)}30%{transform:translateY(-5px)}}.reveal .controls{display:none;position:absolute;top:auto;bottom:var(--r-controls-spacing);right:var(--r-controls-spacing);left:auto;z-index:11;color:#000;pointer-events:none;font-size:10px}.reveal .controls button{position:absolute;padding:0;background-color:transparent;border:0;outline:0;cursor:pointer;color:currentColor;transform:scale(.9999);transition:color .2s ease,opacity .2s ease,transform .2s ease;z-index:2;pointer-events:auto;font-size:inherit;visibility:hidden;opacity:0;-webkit-appearance:none;-webkit-tap-highlight-color:transparent}.reveal .controls .controls-arrow:after,.reveal .controls .controls-arrow:before{content:"";position:absolute;top:0;left:0;width:2.6em;height:.5em;border-radius:.25em;background-color:currentColor;transition:all .15s ease,background-color .8s ease;transform-origin:.2em 50%;will-change:transform}.reveal .controls .controls-arrow{position:relative;width:3.6em;height:3.6em}.reveal .controls .controls-arrow:before{transform:translateX(.5em) translateY(1.55em) rotate(45deg)}.reveal .controls .controls-arrow:after{transform:translateX(.5em) translateY(1.55em) rotate(-45deg)}.reveal .controls .controls-arrow:hover:before{transform:translateX(.5em) translateY(1.55em) rotate(40deg)}.reveal .controls .controls-arrow:hover:after{transform:translateX(.5em) translateY(1.55em) rotate(-40deg)}.reveal .controls .controls-arrow:active:before{transform:translateX(.5em) translateY(1.55em) rotate(36deg)}.reveal .controls .controls-arrow:active:after{transform:translateX(.5em) translateY(1.55em) rotate(-36deg)}.reveal .controls .navigate-left{right:6.4em;bottom:3.2em;transform:translateX(-10px)}.reveal .controls .navigate-left.highlight{animation:bounce-left 2s 50 both ease-out}.reveal .controls .navigate-right{right:0;bottom:3.2em;transform:translateX(10px)}.reveal .controls .navigate-right .controls-arrow{transform:rotate(180deg)}.reveal .controls .navigate-right.highlight{animation:bounce-right 2s 50 both ease-out}.reveal .controls .navigate-up{right:3.2em;bottom:6.4em;transform:translateY(-10px)}.reveal .controls .navigate-up .controls-arrow{transform:rotate(90deg)}.reveal .controls .navigate-down{right:3.2em;bottom:-1.4em;padding-bottom:1.4em;transform:translateY(10px)}.reveal .controls .navigate-down .controls-arrow{transform:rotate(-90deg)}.reveal .controls .navigate-down.highlight{animation:bounce-down 2s 50 both ease-out}.reveal .controls[data-controls-back-arrows=faded] .navigate-up.enabled{opacity:.3}.reveal .controls[data-controls-back-arrows=faded] .navigate-up.enabled:hover{opacity:1}.reveal .controls[data-controls-back-arrows=hidden] .navigate-up.enabled{opacity:0;visibility:hidden}.reveal .controls .enabled{visibility:visible;opacity:.9;cursor:pointer;transform:none}.reveal .controls .enabled.fragmented{opacity:.5}.reveal .controls .enabled.fragmented:hover,.reveal .controls .enabled:hover{opacity:1}.reveal:not(.rtl) .controls[data-controls-back-arrows=faded] .navigate-left.enabled{opacity:.3}.reveal:not(.rtl) .controls[data-controls-back-arrows=faded] .navigate-left.enabled:hover{opacity:1}.reveal:not(.rtl) .controls[data-controls-back-arrows=hidden] .navigate-left.enabled{opacity:0;visibility:hidden}.reveal.rtl .controls[data-controls-back-arrows=faded] .navigate-right.enabled{opacity:.3}.reveal.rtl .controls[data-controls-back-arrows=faded] .navigate-right.enabled:hover{opacity:1}.reveal.rtl .controls[data-controls-back-arrows=hidden] .navigate-right.enabled{opacity:0;visibility:hidden}.reveal[data-navigation-mode=linear].has-horizontal-slides .navigate-down,.reveal[data-navigation-mode=linear].has-horizontal-slides .navigate-up{display:none}.reveal:not(.has-vertical-slides) .controls .navigate-left,.reveal[data-navigation-mode=linear].has-horizontal-slides .navigate-left{bottom:1.4em;right:5.5em}.reveal:not(.has-vertical-slides) .controls .navigate-right,.reveal[data-navigation-mode=linear].has-horizontal-slides .navigate-right{bottom:1.4em;right:.5em}.reveal:not(.has-horizontal-slides) .controls .navigate-up{right:1.4em;bottom:5em}.reveal:not(.has-horizontal-slides) .controls .navigate-down{right:1.4em;bottom:.5em}.reveal.has-dark-background .controls{color:#fff}.reveal.has-light-background .controls{color:#000}.reveal.no-hover .controls .controls-arrow:active:before,.reveal.no-hover .controls .controls-arrow:hover:before{transform:translateX(.5em) translateY(1.55em) rotate(45deg)}.reveal.no-hover .controls .controls-arrow:active:after,.reveal.no-hover .controls .controls-arrow:hover:after{transform:translateX(.5em) translateY(1.55em) rotate(-45deg)}@media screen and (min-width:500px){.reveal-viewport{--r-controls-spacing:0.8em}.reveal .controls[data-controls-layout=edges]{top:0;right:0;bottom:0;left:0}.reveal .controls[data-controls-layout=edges] .navigate-down,.reveal .controls[data-controls-layout=edges] .navigate-left,.reveal .controls[data-controls-layout=edges] .navigate-right,.reveal .controls[data-controls-layout=edges] .navigate-up{bottom:auto;right:auto}.reveal .controls[data-controls-layout=edges] .navigate-left{top:50%;left:var(--r-controls-spacing);margin-top:-1.8em}.reveal .controls[data-controls-layout=edges] .navigate-right{top:50%;right:var(--r-controls-spacing);margin-top:-1.8em}.reveal .controls[data-controls-layout=edges] .navigate-up{top:var(--r-controls-spacing);left:50%;margin-left:-1.8em}.reveal .controls[data-controls-layout=edges] .navigate-down{bottom:calc(var(--r-controls-spacing) - 1.4em + .3em);left:50%;margin-left:-1.8em}}.reveal .progress{position:absolute;display:none;height:3px;width:100%;bottom:0;left:0;z-index:10;background-color:rgba(0,0,0,.2);color:#fff}.reveal .progress:after{content:"";display:block;position:absolute;height:10px;width:100%;top:-10px}.reveal .progress span{display:block;height:100%;width:100%;background-color:currentColor;transition:transform .8s cubic-bezier(.26,.86,.44,.985);transform-origin:0 0;transform:scaleX(0)}.reveal .slide-number{position:absolute;display:block;right:8px;bottom:8px;z-index:31;font-family:Helvetica,sans-serif;font-size:12px;line-height:1;color:#fff;background-color:rgba(0,0,0,.4);padding:5px}.reveal .slide-number a{color:currentColor}.reveal .slide-number-delimiter{margin:0 3px}.reveal{position:relative;width:100%;height:100%;overflow:hidden;touch-action:pinch-zoom}.reveal.embedded{touch-action:pan-y}.reveal.embedded.is-vertical-slide{touch-action:none}.reveal .slides{position:absolute;width:100%;height:100%;top:0;right:0;bottom:0;left:0;margin:auto;pointer-events:none;overflow:visible;z-index:1;text-align:center;perspective:600px;perspective-origin:50% 40%}.reveal .slides>section{perspective:600px}.reveal .slides>section,.reveal .slides>section>section{display:none;position:absolute;width:100%;pointer-events:auto;z-index:10;transform-style:flat;transition:transform-origin .8s cubic-bezier(.26,.86,.44,.985),transform .8s cubic-bezier(.26,.86,.44,.985),visibility .8s cubic-bezier(.26,.86,.44,.985),opacity .8s cubic-bezier(.26,.86,.44,.985)}.reveal[data-transition-speed=fast] .slides section{transition-duration:.4s}.reveal[data-transition-speed=slow] .slides section{transition-duration:1.2s}.reveal .slides section[data-transition-speed=fast]{transition-duration:.4s}.reveal .slides section[data-transition-speed=slow]{transition-duration:1.2s}.reveal .slides>section.stack{padding-top:0;padding-bottom:0;pointer-events:none;height:100%}.reveal .slides>section.present,.reveal .slides>section>section.present{display:block;z-index:11;opacity:1}.reveal .slides>section:empty,.reveal .slides>section>section:empty,.reveal .slides>section>section[data-background-interactive],.reveal .slides>section[data-background-interactive]{pointer-events:none}.reveal.center,.reveal.center .slides,.reveal.center .slides section{min-height:0!important}.reveal .slides>section:not(.present),.reveal .slides>section>section:not(.present){pointer-events:none}.reveal.overview .slides>section,.reveal.overview .slides>section>section{pointer-events:auto}.reveal .slides>section.future,.reveal .slides>section.future>section,.reveal .slides>section.past,.reveal .slides>section.past>section,.reveal .slides>section>section.future,.reveal .slides>section>section.past{opacity:0}.reveal .slides>section[data-transition=slide].past,.reveal .slides>section[data-transition~=slide-out].past,.reveal.slide .slides>section:not([data-transition]).past{transform:translate(-150%,0)}.reveal .slides>section[data-transition=slide].future,.reveal .slides>section[data-transition~=slide-in].future,.reveal.slide .slides>section:not([data-transition]).future{transform:translate(150%,0)}.reveal .slides>section>section[data-transition=slide].past,.reveal .slides>section>section[data-transition~=slide-out].past,.reveal.slide .slides>section>section:not([data-transition]).past{transform:translate(0,-150%)}.reveal .slides>section>section[data-transition=slide].future,.reveal .slides>section>section[data-transition~=slide-in].future,.reveal.slide .slides>section>section:not([data-transition]).future{transform:translate(0,150%)}.reveal .slides>section[data-transition=linear].past,.reveal .slides>section[data-transition~=linear-out].past,.reveal.linear .slides>section:not([data-transition]).past{transform:translate(-150%,0)}.reveal .slides>section[data-transition=linear].future,.reveal .slides>section[data-transition~=linear-in].future,.reveal.linear .slides>section:not([data-transition]).future{transform:translate(150%,0)}.reveal .slides>section>section[data-transition=linear].past,.reveal .slides>section>section[data-transition~=linear-out].past,.reveal.linear .slides>section>section:not([data-transition]).past{transform:translate(0,-150%)}.reveal .slides>section>section[data-transition=linear].future,.reveal .slides>section>section[data-transition~=linear-in].future,.reveal.linear .slides>section>section:not([data-transition]).future{transform:translate(0,150%)}.reveal .slides section[data-transition=default].stack,.reveal.default .slides section.stack{transform-style:preserve-3d}.reveal .slides>section[data-transition=default].past,.reveal .slides>section[data-transition~=default-out].past,.reveal.default .slides>section:not([data-transition]).past{transform:translate3d(-100%,0,0) rotateY(-90deg) translate3d(-100%,0,0)}.reveal .slides>section[data-transition=default].future,.reveal .slides>section[data-transition~=default-in].future,.reveal.default .slides>section:not([data-transition]).future{transform:translate3d(100%,0,0) rotateY(90deg) translate3d(100%,0,0)}.reveal .slides>section>section[data-transition=default].past,.reveal .slides>section>section[data-transition~=default-out].past,.reveal.default .slides>section>section:not([data-transition]).past{transform:translate3d(0,-300px,0) rotateX(70deg) translate3d(0,-300px,0)}.reveal .slides>section>section[data-transition=default].future,.reveal .slides>section>section[data-transition~=default-in].future,.reveal.default .slides>section>section:not([data-transition]).future{transform:translate3d(0,300px,0) rotateX(-70deg) translate3d(0,300px,0)}.reveal .slides section[data-transition=convex].stack,.reveal.convex .slides section.stack{transform-style:preserve-3d}.reveal .slides>section[data-transition=convex].past,.reveal .slides>section[data-transition~=convex-out].past,.reveal.convex .slides>section:not([data-transition]).past{transform:translate3d(-100%,0,0) rotateY(-90deg) translate3d(-100%,0,0)}.reveal .slides>section[data-transition=convex].future,.reveal .slides>section[data-transition~=convex-in].future,.reveal.convex .slides>section:not([data-transition]).future{transform:translate3d(100%,0,0) rotateY(90deg) translate3d(100%,0,0)}.reveal .slides>section>section[data-transition=convex].past,.reveal .slides>section>section[data-transition~=convex-out].past,.reveal.convex .slides>section>section:not([data-transition]).past{transform:translate3d(0,-300px,0) rotateX(70deg) translate3d(0,-300px,0)}.reveal .slides>section>section[data-transition=convex].future,.reveal .slides>section>section[data-transition~=convex-in].future,.reveal.convex .slides>section>section:not([data-transition]).future{transform:translate3d(0,300px,0) rotateX(-70deg) translate3d(0,300px,0)}.reveal .slides section[data-transition=concave].stack,.reveal.concave .slides section.stack{transform-style:preserve-3d}.reveal .slides>section[data-transition=concave].past,.reveal .slides>section[data-transition~=concave-out].past,.reveal.concave .slides>section:not([data-transition]).past{transform:translate3d(-100%,0,0) rotateY(90deg) translate3d(-100%,0,0)}.reveal .slides>section[data-transition=concave].future,.reveal .slides>section[data-transition~=concave-in].future,.reveal.concave .slides>section:not([data-transition]).future{transform:translate3d(100%,0,0) rotateY(-90deg) translate3d(100%,0,0)}.reveal .slides>section>section[data-transition=concave].past,.reveal .slides>section>section[data-transition~=concave-out].past,.reveal.concave .slides>section>section:not([data-transition]).past{transform:translate3d(0,-80%,0) rotateX(-70deg) translate3d(0,-80%,0)}.reveal .slides>section>section[data-transition=concave].future,.reveal .slides>section>section[data-transition~=concave-in].future,.reveal.concave .slides>section>section:not([data-transition]).future{transform:translate3d(0,80%,0) rotateX(70deg) translate3d(0,80%,0)}.reveal .slides section[data-transition=zoom],.reveal.zoom .slides section:not([data-transition]){transition-timing-function:ease}.reveal .slides>section[data-transition=zoom].past,.reveal .slides>section[data-transition~=zoom-out].past,.reveal.zoom .slides>section:not([data-transition]).past{visibility:hidden;transform:scale(16)}.reveal .slides>section[data-transition=zoom].future,.reveal .slides>section[data-transition~=zoom-in].future,.reveal.zoom .slides>section:not([data-transition]).future{visibility:hidden;transform:scale(.2)}.reveal .slides>section>section[data-transition=zoom].past,.reveal .slides>section>section[data-transition~=zoom-out].past,.reveal.zoom .slides>section>section:not([data-transition]).past{transform:scale(16)}.reveal .slides>section>section[data-transition=zoom].future,.reveal .slides>section>section[data-transition~=zoom-in].future,.reveal.zoom .slides>section>section:not([data-transition]).future{transform:scale(.2)}.reveal.cube .slides{perspective:1300px}.reveal.cube .slides section{padding:30px;min-height:700px;backface-visibility:hidden;box-sizing:border-box;transform-style:preserve-3d}.reveal.center.cube .slides section{min-height:0}.reveal.cube .slides section:not(.stack):before{content:"";position:absolute;display:block;width:100%;height:100%;left:0;top:0;background:rgba(0,0,0,.1);border-radius:4px;transform:translateZ(-20px)}.reveal.cube .slides section:not(.stack):after{content:"";position:absolute;display:block;width:90%;height:30px;left:5%;bottom:0;background:0 0;z-index:1;border-radius:4px;box-shadow:0 95px 25px rgba(0,0,0,.2);transform:translateZ(-90px) rotateX(65deg)}.reveal.cube .slides>section.stack{padding:0;background:0 0}.reveal.cube .slides>section.past{transform-origin:100% 0;transform:translate3d(-100%,0,0) rotateY(-90deg)}.reveal.cube .slides>section.future{transform-origin:0 0;transform:translate3d(100%,0,0) rotateY(90deg)}.reveal.cube .slides>section>section.past{transform-origin:0 100%;transform:translate3d(0,-100%,0) rotateX(90deg)}.reveal.cube .slides>section>section.future{transform-origin:0 0;transform:translate3d(0,100%,0) rotateX(-90deg)}.reveal.page .slides{perspective-origin:0 50%;perspective:3000px}.reveal.page .slides section{padding:30px;min-height:700px;box-sizing:border-box;transform-style:preserve-3d}.reveal.page .slides section.past{z-index:12}.reveal.page .slides section:not(.stack):before{content:"";position:absolute;display:block;width:100%;height:100%;left:0;top:0;background:rgba(0,0,0,.1);transform:translateZ(-20px)}.reveal.page .slides section:not(.stack):after{content:"";position:absolute;display:block;width:90%;height:30px;left:5%;bottom:0;background:0 0;z-index:1;border-radius:4px;box-shadow:0 95px 25px rgba(0,0,0,.2);transform:translateZ(-90px) rotateX(65deg)}.reveal.page .slides>section.stack{padding:0;background:0 0}.reveal.page .slides>section.past{transform-origin:0 0;transform:translate3d(-40%,0,0) rotateY(-80deg)}.reveal.page .slides>section.future{transform-origin:100% 0;transform:translate3d(0,0,0)}.reveal.page .slides>section>section.past{transform-origin:0 0;transform:translate3d(0,-40%,0) rotateX(80deg)}.reveal.page .slides>section>section.future{transform-origin:0 100%;transform:translate3d(0,0,0)}.reveal .slides section[data-transition=fade],.reveal.fade .slides section:not([data-transition]),.reveal.fade .slides>section>section:not([data-transition]){transform:none;transition:opacity .5s}.reveal.fade.overview .slides section,.reveal.fade.overview .slides>section>section{transition:none}.reveal .slides section[data-transition=none],.reveal.none .slides section:not([data-transition]){transform:none;transition:none}.reveal .pause-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:#000;visibility:hidden;opacity:0;z-index:100;transition:all 1s ease}.reveal .pause-overlay .resume-button{position:absolute;bottom:20px;right:20px;color:#ccc;border-radius:2px;padding:6px 14px;border:2px solid #ccc;font-size:16px;background:0 0;cursor:pointer}.reveal .pause-overlay .resume-button:hover{color:#fff;border-color:#fff}.reveal.paused .pause-overlay{visibility:visible;opacity:1}.reveal .no-transition,.reveal .no-transition *,.reveal .slides.disable-slide-transitions section{transition:none!important}.reveal .slides.disable-slide-transitions section{transform:none!important}.reveal .backgrounds{position:absolute;width:100%;height:100%;top:0;left:0;perspective:600px}.reveal .slide-background{display:none;position:absolute;width:100%;height:100%;opacity:0;visibility:hidden;overflow:hidden;background-color:rgba(0,0,0,0);transition:all .8s cubic-bezier(.26,.86,.44,.985)}.reveal .slide-background-content{position:absolute;width:100%;height:100%;background-position:50% 50%;background-repeat:no-repeat;background-size:cover}.reveal .slide-background.stack{display:block}.reveal .slide-background.present{opacity:1;visibility:visible;z-index:2}.print-pdf .reveal .slide-background{opacity:1!important;visibility:visible!important}.reveal .slide-background video{position:absolute;width:100%;height:100%;max-width:none;max-height:none;top:0;left:0;object-fit:cover}.reveal .slide-background[data-background-size=contain] video{object-fit:contain}.reveal>.backgrounds .slide-background[data-background-transition=none],.reveal[data-background-transition=none]>.backgrounds .slide-background:not([data-background-transition]){transition:none}.reveal>.backgrounds .slide-background[data-background-transition=slide],.reveal[data-background-transition=slide]>.backgrounds .slide-background:not([data-background-transition]){opacity:1}.reveal>.backgrounds .slide-background.past[data-background-transition=slide],.reveal[data-background-transition=slide]>.backgrounds .slide-background.past:not([data-background-transition]){transform:translate(-100%,0)}.reveal>.backgrounds .slide-background.future[data-background-transition=slide],.reveal[data-background-transition=slide]>.backgrounds .slide-background.future:not([data-background-transition]){transform:translate(100%,0)}.reveal>.backgrounds .slide-background>.slide-background.past[data-background-transition=slide],.reveal[data-background-transition=slide]>.backgrounds .slide-background>.slide-background.past:not([data-background-transition]){transform:translate(0,-100%)}.reveal>.backgrounds .slide-background>.slide-background.future[data-background-transition=slide],.reveal[data-background-transition=slide]>.backgrounds .slide-background>.slide-background.future:not([data-background-transition]){transform:translate(0,100%)}.reveal>.backgrounds .slide-background.past[data-background-transition=convex],.reveal[data-background-transition=convex]>.backgrounds .slide-background.past:not([data-background-transition]){opacity:0;transform:translate3d(-100%,0,0) rotateY(-90deg) translate3d(-100%,0,0)}.reveal>.backgrounds .slide-background.future[data-background-transition=convex],.reveal[data-background-transition=convex]>.backgrounds .slide-background.future:not([data-background-transition]){opacity:0;transform:translate3d(100%,0,0) rotateY(90deg) translate3d(100%,0,0)}.reveal>.backgrounds .slide-background>.slide-background.past[data-background-transition=convex],.reveal[data-background-transition=convex]>.backgrounds .slide-background>.slide-background.past:not([data-background-transition]){opacity:0;transform:translate3d(0,-100%,0) rotateX(90deg) translate3d(0,-100%,0)}.reveal>.backgrounds .slide-background>.slide-background.future[data-background-transition=convex],.reveal[data-background-transition=convex]>.backgrounds .slide-background>.slide-background.future:not([data-background-transition]){opacity:0;transform:translate3d(0,100%,0) rotateX(-90deg) translate3d(0,100%,0)}.reveal>.backgrounds .slide-background.past[data-background-transition=concave],.reveal[data-background-transition=concave]>.backgrounds .slide-background.past:not([data-background-transition]){opacity:0;transform:translate3d(-100%,0,0) rotateY(90deg) translate3d(-100%,0,0)}.reveal>.backgrounds .slide-background.future[data-background-transition=concave],.reveal[data-background-transition=concave]>.backgrounds .slide-background.future:not([data-background-transition]){opacity:0;transform:translate3d(100%,0,0) rotateY(-90deg) translate3d(100%,0,0)}.reveal>.backgrounds .slide-background>.slide-background.past[data-background-transition=concave],.reveal[data-background-transition=concave]>.backgrounds .slide-background>.slide-background.past:not([data-background-transition]){opacity:0;transform:translate3d(0,-100%,0) rotateX(-90deg) translate3d(0,-100%,0)}.reveal>.backgrounds .slide-background>.slide-background.future[data-background-transition=concave],.reveal[data-background-transition=concave]>.backgrounds .slide-background>.slide-background.future:not([data-background-transition]){opacity:0;transform:translate3d(0,100%,0) rotateX(90deg) translate3d(0,100%,0)}.reveal>.backgrounds .slide-background[data-background-transition=zoom],.reveal[data-background-transition=zoom]>.backgrounds .slide-background:not([data-background-transition]){transition-timing-function:ease}.reveal>.backgrounds .slide-background.past[data-background-transition=zoom],.reveal[data-background-transition=zoom]>.backgrounds .slide-background.past:not([data-background-transition]){opacity:0;visibility:hidden;transform:scale(16)}.reveal>.backgrounds .slide-background.future[data-background-transition=zoom],.reveal[data-background-transition=zoom]>.backgrounds .slide-background.future:not([data-background-transition]){opacity:0;visibility:hidden;transform:scale(.2)}.reveal>.backgrounds .slide-background>.slide-background.past[data-background-transition=zoom],.reveal[data-background-transition=zoom]>.backgrounds .slide-background>.slide-background.past:not([data-background-transition]){opacity:0;visibility:hidden;transform:scale(16)}.reveal>.backgrounds .slide-background>.slide-background.future[data-background-transition=zoom],.reveal[data-background-transition=zoom]>.backgrounds .slide-background>.slide-background.future:not([data-background-transition]){opacity:0;visibility:hidden;transform:scale(.2)}.reveal[data-transition-speed=fast]>.backgrounds .slide-background{transition-duration:.4s}.reveal[data-transition-speed=slow]>.backgrounds .slide-background{transition-duration:1.2s}.reveal [data-auto-animate-target^=unmatched]{will-change:opacity}.reveal section[data-auto-animate]:not(.stack):not([data-auto-animate=running]) [data-auto-animate-target^=unmatched]{opacity:0}.reveal.overview{perspective-origin:50% 50%;perspective:700px}.reveal.overview .slides section{height:100%;top:0!important;opacity:1!important;overflow:hidden;visibility:visible!important;cursor:pointer;box-sizing:border-box}.reveal.overview .slides section.present,.reveal.overview .slides section:hover{outline:10px solid rgba(150,150,150,.4);outline-offset:10px}.reveal.overview .slides section .fragment{opacity:1;transition:none}.reveal.overview .slides section:after,.reveal.overview .slides section:before{display:none!important}.reveal.overview .slides>section.stack{padding:0;top:0!important;background:0 0;outline:0;overflow:visible}.reveal.overview .backgrounds{perspective:inherit}.reveal.overview .backgrounds .slide-background{opacity:1;visibility:visible;outline:10px solid rgba(150,150,150,.1);outline-offset:10px}.reveal.overview .backgrounds .slide-background.stack{overflow:visible}.reveal.overview .slides section,.reveal.overview-deactivating .slides section{transition:none}.reveal.overview .backgrounds .slide-background,.reveal.overview-deactivating .backgrounds .slide-background{transition:none}.reveal.rtl .slides,.reveal.rtl .slides h1,.reveal.rtl .slides h2,.reveal.rtl .slides h3,.reveal.rtl .slides h4,.reveal.rtl .slides h5,.reveal.rtl .slides h6{direction:rtl;font-family:sans-serif}.reveal.rtl code,.reveal.rtl pre{direction:ltr}.reveal.rtl ol,.reveal.rtl ul{text-align:right}.reveal.rtl .progress span{transform-origin:100% 0}.reveal.has-parallax-background .backgrounds{transition:all .8s ease}.reveal.has-parallax-background[data-transition-speed=fast] .backgrounds{transition-duration:.4s}.reveal.has-parallax-background[data-transition-speed=slow] .backgrounds{transition-duration:1.2s}@keyframes fade-in{from{opacity:0}to{opacity:1}}@keyframes scale-up{from{transform:scale(.95)}to{transform:scale(1)}}.reveal [data-preview-image],.reveal [data-preview-link]:not(a):not([data-preview-link=false]),.reveal [data-preview-video]{cursor:zoom-in}.r-overlay{position:absolute;top:var(--r-overlay-margin);right:var(--r-overlay-margin);bottom:var(--r-overlay-margin);left:var(--r-overlay-margin);border-radius:min(var(--r-overlay-margin),6px);z-index:99;background:rgba(0,0,0,.95);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);transition:all .3s ease;color:#fff;animation:fade-in .3s ease;font-family:ui-sans-serif,system-ui,-apple-system,Helvetica,sans-serif}.r-overlay-viewport{position:absolute;top:var(--r-overlay-padding);right:var(--r-overlay-padding);bottom:var(--r-overlay-padding);left:var(--r-overlay-padding);gap:var(--r-overlay-gap);display:flex;flex-direction:column}.r-overlay-header{display:flex;z-index:2;box-sizing:border-box;align-items:center;justify-content:flex-end;height:var(--r-overlay-header-height);gap:6px}.r-overlay-header .r-overlay-button{all:unset;display:flex;align-items:center;justify-content:center;min-width:var(--r-overlay-header-height);min-height:var(--r-overlay-header-height);padding:0 calc(var(--r-overlay-header-height)/ 4);opacity:1;border-radius:6px;font-size:18px;gap:8px;cursor:pointer;box-sizing:border-box}.r-overlay-header .r-overlay-button:hover{opacity:1;background-color:rgba(255,255,255,.15)}.r-overlay-header .icon{display:inline-block;width:20px;height:20px;background-position:50% 50%;background-size:100%;background-repeat:no-repeat}.r-overlay-close .icon{background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMTIuODU0IDIuODU0YS41LjUgMCAwIDAtLjcwOC0uNzA4TDcuNSA2Ljc5MyAyLjg1NCAyLjE0NmEuNS41IDAgMSAwLS43MDguNzA4TDYuNzkzIDcuNWwtNC42NDcgNC42NDZhLjUuNSAwIDAgMCAuNzA4LjcwOEw3LjUgOC4yMDdsNC42NDYgNC42NDdhLjUuNSAwIDAgMCAuNzA4LS43MDhMOC4yMDcgNy41bDQuNjQ3LTQuNjQ2WiIgY2xpcC1ydWxlPSJldmVub2RkIi8+PC9zdmc+)}.r-overlay-external .icon{background-image:url(data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgZmlsbD0ibm9uZSI+PHBhdGggZmlsbD0iI2ZmZiIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMyAyYTEgMSAwIDAgMC0xIDF2OWExIDEgMCAwIDAgMSAxaDlhMSAxIDAgMCAwIDEtMVY4LjVhLjUuNSAwIDAgMC0xIDBWMTJIM1YzaDMuNWEuNS41IDAgMCAwIDAtMUgzWm05Ljg1NC4xNDZhLjUuNSAwIDAgMSAuMTQ2LjM1MVY1LjVhLjUuNSAwIDAgMS0xIDBWMy43MDdMNi44NTQgOC44NTRhLjUuNSAwIDEgMS0uNzA4LS43MDhMMTEuMjkzIDNIOS41YS41LjUgMCAwIDEgMC0xaDNhLjQ5OS40OTkgMCAwIDEgLjM1NC4xNDZaIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiLz48L3N2Zz4=)}.r-overlay-content{position:relative;display:grid;place-items:center;border-radius:6px;overflow:hidden;flex-grow:1;background-color:rgba(20,20,20,.8);animation:scale-up .5s cubic-bezier(.26,.86,.44,.985)}.r-overlay-spinner{position:absolute;display:block;top:50%;left:50%;width:32px;height:32px;margin:-16px 0 0 -16px;z-index:10;background-image:url(data:image/gif;base64,R0lGODlhIAAgAPMAAJmZmf%2F%2F%2F6%2Bvr8nJybW1tcDAwOjo6Nvb26ioqKOjo7Ozs%2FLy8vz8%2FAAAAAAAAAAAACH%2FC05FVFNDQVBFMi4wAwEAAAAh%2FhpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh%2BQQJCgAAACwAAAAAIAAgAAAE5xDISWlhperN52JLhSSdRgwVo1ICQZRUsiwHpTJT4iowNS8vyW2icCF6k8HMMBkCEDskxTBDAZwuAkkqIfxIQyhBQBFvAQSDITM5VDW6XNE4KagNh6Bgwe60smQUB3d4Rz1ZBApnFASDd0hihh12BkE9kjAJVlycXIg7CQIFA6SlnJ87paqbSKiKoqusnbMdmDC2tXQlkUhziYtyWTxIfy6BE8WJt5YJvpJivxNaGmLHT0VnOgSYf0dZXS7APdpB309RnHOG5gDqXGLDaC457D1zZ%2FV%2FnmOM82XiHRLYKhKP1oZmADdEAAAh%2BQQJCgAAACwAAAAAIAAgAAAE6hDISWlZpOrNp1lGNRSdRpDUolIGw5RUYhhHukqFu8DsrEyqnWThGvAmhVlteBvojpTDDBUEIFwMFBRAmBkSgOrBFZogCASwBDEY%2FCZSg7GSE0gSCjQBMVG023xWBhklAnoEdhQEfyNqMIcKjhRsjEdnezB%2BA4k8gTwJhFuiW4dokXiloUepBAp5qaKpp6%2BHo7aWW54wl7obvEe0kRuoplCGepwSx2jJvqHEmGt6whJpGpfJCHmOoNHKaHx61WiSR92E4lbFoq%2BB6QDtuetcaBPnW6%2BO7wDHpIiK9SaVK5GgV543tzjgGcghAgAh%2BQQJCgAAACwAAAAAIAAgAAAE7hDISSkxpOrN5zFHNWRdhSiVoVLHspRUMoyUakyEe8PTPCATW9A14E0UvuAKMNAZKYUZCiBMuBakSQKG8G2FzUWox2AUtAQFcBKlVQoLgQReZhQlCIJesQXI5B0CBnUMOxMCenoCfTCEWBsJColTMANldx15BGs8B5wlCZ9Po6OJkwmRpnqkqnuSrayqfKmqpLajoiW5HJq7FL1Gr2mMMcKUMIiJgIemy7xZtJsTmsM4xHiKv5KMCXqfyUCJEonXPN2rAOIAmsfB3uPoAK%2B%2BG%2Bw48edZPK%2BM6hLJpQg484enXIdQFSS1u6UhksENEQAAIfkECQoAAAAsAAAAACAAIAAABOcQyEmpGKLqzWcZRVUQnZYg1aBSh2GUVEIQ2aQOE%2BG%2BcD4ntpWkZQj1JIiZIogDFFyHI0UxQwFugMSOFIPJftfVAEoZLBbcLEFhlQiqGp1Vd140AUklUN3eCA51C1EWMzMCezCBBmkxVIVHBWd3HHl9JQOIJSdSnJ0TDKChCwUJjoWMPaGqDKannasMo6WnM562R5YluZRwur0wpgqZE7NKUm%2BFNRPIhjBJxKZteWuIBMN4zRMIVIhffcgojwCF117i4nlLnY5ztRLsnOk%2BaV%2BoJY7V7m76PdkS4trKcdg0Zc0tTcKkRAAAIfkECQoAAAAsAAAAACAAIAAABO4QyEkpKqjqzScpRaVkXZWQEximw1BSCUEIlDohrft6cpKCk5xid5MNJTaAIkekKGQkWyKHkvhKsR7ARmitkAYDYRIbUQRQjWBwJRzChi9CRlBcY1UN4g0%2FVNB0AlcvcAYHRyZPdEQFYV8ccwR5HWxEJ02YmRMLnJ1xCYp0Y5idpQuhopmmC2KgojKasUQDk5BNAwwMOh2RtRq5uQuPZKGIJQIGwAwGf6I0JXMpC8C7kXWDBINFMxS4DKMAWVWAGYsAdNqW5uaRxkSKJOZKaU3tPOBZ4DuK2LATgJhkPJMgTwKCdFjyPHEnKxFCDhEAACH5BAkKAAAALAAAAAAgACAAAATzEMhJaVKp6s2nIkolIJ2WkBShpkVRWqqQrhLSEu9MZJKK9y1ZrqYK9WiClmvoUaF8gIQSNeF1Er4MNFn4SRSDARWroAIETg1iVwuHjYB1kYc1mwruwXKC9gmsJXliGxc%2BXiUCby9ydh1sOSdMkpMTBpaXBzsfhoc5l58Gm5yToAaZhaOUqjkDgCWNHAULCwOLaTmzswadEqggQwgHuQsHIoZCHQMMQgQGubVEcxOPFAcMDAYUA85eWARmfSRQCdcMe0zeP1AAygwLlJtPNAAL19DARdPzBOWSm1brJBi45soRAWQAAkrQIykShQ9wVhHCwCQCACH5BAkKAAAALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq%2BE71SRQeyqUToLA7VxF0JDyIQh%2FMVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiRMDjI0Fd30%2FiI2UA5GSS5UDj2l6NoqgOgN4gksEBgYFf0FDqKgHnyZ9OX8HrgYHdHpcHQULXAS2qKpENRg7eAMLC7kTBaixUYFkKAzWAAnLC7FLVxLWDBLKCwaKTULgEwbLA4hJtOkSBNqITT3xEgfLpBtzE%2FjiuL04RGEBgwWhShRgQExHBAAh%2BQQJCgAAACwAAAAAIAAgAAAE7xDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfZiCqGk5dTESJeaOAlClzsJsqwiJwiqnFrb2nS9kmIcgEsjQydLiIlHehhpejaIjzh9eomSjZR%2BipslWIRLAgMDOR2DOqKogTB9pCUJBagDBXR6XB0EBkIIsaRsGGMMAxoDBgYHTKJiUYEGDAzHC9EACcUGkIgFzgwZ0QsSBcXHiQvOwgDdEwfFs0sDzt4S6BK4xYjkDOzn0unFeBzOBijIm1Dgmg5YFQwsCMjp1oJ8LyIAACH5BAkKAAAALAAAAAAgACAAAATwEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq%2BE71SRQeyqUToLA7VxF0JDyIQh%2FMVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GGl6NoiPOH16iZKNlH6KmyWFOggHhEEvAwwMA0N9GBsEC6amhnVcEwavDAazGwIDaH1ipaYLBUTCGgQDA8NdHz0FpqgTBwsLqAbWAAnIA4FWKdMLGdYGEgraigbT0OITBcg5QwPT4xLrROZL6AuQAPUS7bxLpoWidY0JtxLHKhwwMJBTHgPKdEQAACH5BAkKAAAALAAAAAAgACAAAATrEMhJaVKp6s2nIkqFZF2VIBWhUsJaTokqUCoBq%2BE71SRQeyqUToLA7VxF0JDyIQh%2FMVVPMt1ECZlfcjZJ9mIKoaTl1MRIl5o4CUKXOwmyrCInCKqcWtvadL2SYhyASyNDJ0uIiUd6GAULDJCRiXo1CpGXDJOUjY%2BYip9DhToJA4RBLwMLCwVDfRgbBAaqqoZ1XBMHswsHtxtFaH1iqaoGNgAIxRpbFAgfPQSqpbgGBqUD1wBXeCYp1AYZ19JJOYgH1KwA4UBvQwXUBxPqVD9L3sbp2BNk2xvvFPJd%2BMFCN6HAAIKgNggY0KtEBAAh%2BQQJCgAAACwAAAAAIAAgAAAE6BDISWlSqerNpyJKhWRdlSAVoVLCWk6JKlAqAavhO9UkUHsqlE6CwO1cRdCQ8iEIfzFVTzLdRAmZX3I2SfYIDMaAFdTESJeaEDAIMxYFqrOUaNW4E4ObYcCXaiBVEgULe0NJaxxtYksjh2NLkZISgDgJhHthkpU4mW6blRiYmZOlh4JWkDqILwUGBnE6TYEbCgevr0N1gH4At7gHiRpFaLNrrq8HNgAJA70AWxQIH1%2BvsYMDAzZQPC9VCNkDWUhGkuE5PxJNwiUK4UfLzOlD4WvzAHaoG9nxPi5d%2BjYUqfAhhykOFwJWiAAAIfkECQoAAAAsAAAAACAAIAAABPAQyElpUqnqzaciSoVkXVUMFaFSwlpOCcMYlErAavhOMnNLNo8KsZsMZItJEIDIFSkLGQoQTNhIsFehRww2CQLKF0tYGKYSg%2BygsZIuNqJksKgbfgIGepNo2cIUB3V1B3IvNiBYNQaDSTtfhhx0CwVPI0UJe0%2Bbm4g5VgcGoqOcnjmjqDSdnhgEoamcsZuXO1aWQy8KAwOAuTYYGwi7w5h%2BKr0SJ8MFihpNbx%2B4Erq7BYBuzsdiH1jCAzoSfl0rVirNbRXlBBlLX%2BBP0XJLAPGzTkAuAOqb0WT5AH7OcdCm5B8TgRwSRKIHQtaLCwg1RAAAOwAAAAAAAAAAAA%3D%3D);visibility:hidden;opacity:0}.r-overlay-preview .r-overlay-content iframe{width:100%;height:100%;max-width:100%;max-height:100%;border:0;opacity:0;visibility:hidden;transition:all .3s ease}.r-overlay-preview[data-state=loaded] iframe{opacity:1;visibility:visible}.r-overlay-preview .r-overlay-content img,.r-overlay-preview .r-overlay-content video{position:absolute;max-width:100%;max-height:100%;width:100%;height:100%;margin:0;object-fit:scale-down}.r-overlay-preview[data-preview-fit=none] img,.r-overlay-preview[data-preview-fit=none] video{object-fit:none}.r-overlay-preview[data-preview-fit=scale-down] img,.r-overlay-preview[data-preview-fit=scale-down] video{object-fit:scale-down}.r-overlay-preview[data-preview-fit=contain] img,.r-overlay-preview[data-preview-fit=contain] video{object-fit:contain}.r-overlay-preview[data-preview-fit=cover] img,.r-overlay-preview[data-preview-fit=cover] video{object-fit:cover}.r-overlay-preview[data-state=loaded] .r-overlay-content-inner{position:absolute;z-index:-1;left:0;top:45%;width:100%;text-align:center;letter-spacing:normal}.r-overlay-preview .r-overlay-error{font-size:18px;color:orange}.r-overlay-preview .x-frame-error{opacity:0;transition:opacity .3s ease .3s}.r-overlay-preview[data-state=loaded] .x-frame-error{opacity:1}.r-overlay-preview[data-state=loading] .r-overlay-spinner{opacity:.6;visibility:visible}.r-overlay-help .r-overlay-content{overflow:auto}.r-overlay-help-content{max-width:560px;padding:20px 0;margin:auto;text-align:center;letter-spacing:normal}.r-overlay-help-content .title{font-size:20px;margin-top:0}.r-overlay-help .r-overlay-help-content table{border:1px solid #fff;border-collapse:collapse;font-size:16px;text-align:left}.r-overlay-help .r-overlay-help-content table td,.r-overlay-help .r-overlay-help-content table th{width:240px;padding:14px;border:1px solid #fff;vertical-align:middle}.r-overlay-help .r-overlay-help-content table th{padding-top:20px;padding-bottom:20px}.reveal .playback{position:absolute;left:15px;bottom:20px;z-index:30;cursor:pointer;transition:all .4s ease;-webkit-tap-highlight-color:transparent}.reveal.overview .playback{opacity:0;visibility:hidden}.reveal .hljs{min-height:100%}.reveal .hljs table{margin:initial}.reveal .hljs-ln-code,.reveal .hljs-ln-numbers{padding:0;border:0}.reveal .hljs-ln-numbers{opacity:.6;padding-right:.75em;text-align:right;vertical-align:top}.reveal .hljs.has-highlights tr:not(.highlight-line){opacity:.4}.reveal .hljs.has-highlights.fragment{transition:all .2s ease}.reveal .hljs:not(:first-child).fragment{position:absolute;top:0;left:0;width:100%;box-sizing:border-box}.reveal pre[data-auto-animate-target]{overflow:hidden}.reveal pre[data-auto-animate-target] code{height:100%}.reveal .roll{display:inline-block;line-height:1.2;overflow:hidden;vertical-align:top;perspective:400px;perspective-origin:50% 50%}.reveal .roll:hover{background:0 0;text-shadow:none}.reveal .roll span{display:block;position:relative;padding:0 2px;pointer-events:none;transition:all .4s ease;transform-origin:50% 0;transform-style:preserve-3d;backface-visibility:hidden}.reveal .roll:hover span{background:rgba(0,0,0,.5);transform:translate3d(0,0,-45px) rotateX(90deg)}.reveal .roll span:after{content:attr(data-title);display:block;position:absolute;left:0;top:0;padding:0 2px;backface-visibility:hidden;transform-origin:50% 0;transform:translate3d(0,110%,0) rotateX(-90deg)}.reveal aside.notes{display:none}.reveal .speaker-notes{display:none;position:absolute;width:33.3333333333%;height:100%;top:0;left:100%;padding:14px 18px 14px 18px;z-index:1;font-size:18px;line-height:1.4;border:1px solid rgba(0,0,0,.05);color:#222;background-color:#f5f5f5;overflow:auto;box-sizing:border-box;text-align:left;font-family:Helvetica,sans-serif;-webkit-overflow-scrolling:touch}.reveal .speaker-notes .notes-placeholder{color:#ccc;font-style:italic}.reveal .speaker-notes:focus{outline:0}.reveal .speaker-notes:before{content:"Speaker notes";display:block;margin-bottom:10px;opacity:.5}.reveal.show-notes{max-width:75%;overflow:visible}.reveal.show-notes .speaker-notes{display:block}@media screen and (min-width:1600px){.reveal .speaker-notes{font-size:20px}}@media screen and (max-width:1024px){.reveal.show-notes{border-left:0;max-width:none;max-height:70%;max-height:70vh;overflow:visible}.reveal.show-notes .speaker-notes{top:100%;left:0;width:100%;height:30vh;border:0}}@media screen and (max-width:600px){.reveal.show-notes{max-height:60%;max-height:60vh}.reveal.show-notes .speaker-notes{top:100%;height:40vh}.reveal .speaker-notes{font-size:14px}}.reveal .jump-to-slide{position:absolute;top:15px;left:15px;z-index:30;font-size:32px;-webkit-tap-highlight-color:transparent}.reveal .jump-to-slide-input{background:0 0;padding:8px;font-size:inherit;color:currentColor;border:0}.reveal .jump-to-slide-input::placeholder{color:currentColor;opacity:.5}.reveal.has-dark-background .jump-to-slide-input{color:#fff}.reveal.has-light-background .jump-to-slide-input{color:#222}.reveal .jump-to-slide-input:focus{outline:0}.zoomed .reveal *,.zoomed .reveal :after,.zoomed .reveal :before{backface-visibility:visible!important}.zoomed .reveal .controls,.zoomed .reveal .progress{opacity:0}.zoomed .reveal .roll span{background:0 0}.zoomed .reveal .roll span:after{visibility:hidden}.reveal-viewport.loading-scroll-mode{visibility:hidden}.reveal-viewport.reveal-scroll{margin:0 auto;overflow:auto;overflow-x:hidden;overflow-y:auto;z-index:1;--r-scrollbar-width:7px;--r-scrollbar-trigger-size:5px;--r-controls-spacing:8px}@media screen and (max-width:500px){.reveal-viewport.reveal-scroll{--r-scrollbar-width:3px;--r-scrollbar-trigger-size:3px}}.reveal-viewport.reveal-scroll .backgrounds,.reveal-viewport.reveal-scroll .controls,.reveal-viewport.reveal-scroll .playback,.reveal-viewport.reveal-scroll .progress,.reveal-viewport.reveal-scroll .slide-number,.reveal-viewport.reveal-scroll .speaker-notes{display:none!important}.reveal-viewport.reveal-scroll .pause-overlay,.reveal-viewport.reveal-scroll .r-overlay{position:fixed}.reveal-viewport.reveal-scroll .reveal{overflow:visible;touch-action:manipulation}.reveal-viewport.reveal-scroll .slides{position:static;pointer-events:initial;left:auto;top:auto;width:100%!important;margin:0;padding:0;overflow:visible;display:block;perspective:none;perspective-origin:50% 50%}.reveal-viewport.reveal-scroll .scroll-page{position:relative;width:100%;height:calc(var(--page-height) + var(--page-scroll-padding));z-index:1;overflow:visible}.reveal-viewport.reveal-scroll .scroll-page-sticky{position:sticky;height:var(--page-height);top:0}.reveal-viewport.reveal-scroll .scroll-page-content{position:absolute;top:0;left:0;width:100%;height:100%;overflow:hidden}.reveal-viewport.reveal-scroll .scroll-page section{visibility:visible!important;display:block!important;position:absolute!important;width:var(--slide-width)!important;height:var(--slide-height)!important;top:50%!important;left:50%!important;opacity:1!important;transform:scale(var(--slide-scale)) translate(-50%,-50%)!important;transform-style:flat!important;transform-origin:0 0!important}.reveal-viewport.reveal-scroll .slide-background{display:block!important;position:absolute;top:0;left:0;width:100%;height:100%;z-index:auto!important;visibility:visible;opacity:1;touch-action:manipulation}.reveal-viewport.reveal-scroll[data-scrollbar=auto]::-webkit-scrollbar,.reveal-viewport.reveal-scroll[data-scrollbar=true]::-webkit-scrollbar{display:none}.reveal-viewport.reveal-scroll[data-scrollbar=auto],.reveal-viewport.reveal-scroll[data-scrollbar=true]{scrollbar-width:none}.reveal-viewport.has-dark-background,.reveal.has-dark-background{--r-overlay-element-bg-color:240,240,240;--r-overlay-element-fg-color:0,0,0}.reveal-viewport.has-light-background,.reveal.has-light-background{--r-overlay-element-bg-color:0,0,0;--r-overlay-element-fg-color:240,240,240}.reveal-viewport.reveal-scroll .scrollbar{position:sticky;top:50%;z-index:20;opacity:0;transition:all .3s ease}.reveal-viewport.reveal-scroll .scrollbar.visible,.reveal-viewport.reveal-scroll .scrollbar:hover{opacity:1}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-inner{position:absolute;width:var(--r-scrollbar-width);height:calc(var(--viewport-height) - var(--r-controls-spacing) * 2);right:var(--r-controls-spacing);top:0;transform:translateY(-50%);border-radius:var(--r-scrollbar-width);z-index:10}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-playhead{position:absolute;width:var(--r-scrollbar-width);height:var(--r-scrollbar-width);top:0;left:0;border-radius:var(--r-scrollbar-width);background-color:rgba(var(--r-overlay-element-bg-color),1);z-index:11;transition:background-color .2s ease}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide{position:absolute;width:100%;background-color:rgba(var(--r-overlay-element-bg-color),.2);box-shadow:0 0 0 1px rgba(var(--r-overlay-element-fg-color),.1);border-radius:var(--r-scrollbar-width);transition:background-color .2s ease}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide:after{content:"";position:absolute;width:200%;height:100%;top:0;left:-50%;background:rgba(0,0,0,0);z-index:-1}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active,.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide:hover{background-color:rgba(var(--r-overlay-element-bg-color),.4)}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-trigger{position:absolute;width:100%;transition:background-color .2s ease}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active.has-triggers{background-color:rgba(var(--r-overlay-element-bg-color),.4);z-index:10}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active .scrollbar-trigger:after{content:"";position:absolute;width:var(--r-scrollbar-trigger-size);height:var(--r-scrollbar-trigger-size);border-radius:20px;top:50%;left:50%;transform:translate(-50%,-50%);background-color:rgba(var(--r-overlay-element-bg-color),1);transition:transform .2s ease,opacity .2s ease;opacity:.4}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active .scrollbar-trigger.active:after,.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active .scrollbar-trigger.active~.scrollbar-trigger:after{opacity:1}.reveal-viewport.reveal-scroll .scrollbar .scrollbar-slide.active .scrollbar-trigger~.scrollbar-trigger.active:after{transform:translate(calc(var(--r-scrollbar-width) * -2),0);background-color:rgba(var(--r-overlay-element-bg-color),1)}html.reveal-print *{-webkit-print-color-adjust:exact}html.reveal-print{width:100%;height:100%;overflow:visible}html.reveal-print body{margin:0 auto!important;border:0;padding:0;float:none!important;overflow:visible}html.reveal-print .nestedarrow,html.reveal-print .reveal .controls,html.reveal-print .reveal .playback,html.reveal-print .reveal .progress,html.reveal-print .reveal.overview,html.reveal-print .state-background{display:none!important}html.reveal-print .reveal pre code{overflow:hidden!important}html.reveal-print .reveal{width:auto!important;height:auto!important;overflow:hidden!important}html.reveal-print .reveal .slides{position:static;width:100%!important;height:auto!important;zoom:1!important;pointer-events:initial;left:auto;top:auto;margin:0!important;padding:0!important;overflow:visible;display:block;perspective:none;perspective-origin:50% 50%}html.reveal-print .reveal .slides .pdf-page{position:relative;overflow:hidden;z-index:1;page-break-after:always}html.reveal-print .reveal .slides .pdf-page:last-of-type{page-break-after:avoid}html.reveal-print .reveal .slides section{visibility:visible!important;display:block!important;position:absolute!important;margin:0!important;padding:0!important;box-sizing:border-box!important;min-height:1px;opacity:1!important;transform-style:flat!important;transform:none!important}html.reveal-print .reveal section.stack{position:relative!important;margin:0!important;padding:0!important;page-break-after:avoid!important;height:auto!important;min-height:auto!important}html.reveal-print .reveal img{box-shadow:none}html.reveal-print .reveal .backgrounds{display:none}html.reveal-print .reveal .slide-background{display:block!important;position:absolute;top:0;left:0;width:100%;height:100%;z-index:auto!important}html.reveal-print .reveal.show-notes{max-width:none;max-height:none}html.reveal-print .reveal .speaker-notes-pdf{display:block;width:100%;height:auto;max-height:none;top:auto;right:auto;bottom:auto;left:auto;z-index:100}html.reveal-print .reveal .speaker-notes-pdf[data-layout=separate-page]{position:relative;color:inherit;background-color:transparent;padding:20px;page-break-after:always;border:0}html.reveal-print .reveal .slide-number-pdf{display:block;position:absolute;font-size:14px;visibility:visible}html.reveal-print .aria-status{display:none}@media print{html:not(.print-pdf){overflow:visible;width:auto;height:auto}html:not(.print-pdf) body{margin:0;padding:0;overflow:visible}html:not(.print-pdf) .reveal{background:#fff;font-size:20pt}html:not(.print-pdf) .reveal .backgrounds,html:not(.print-pdf) .reveal .controls,html:not(.print-pdf) .reveal .progress,html:not(.print-pdf) .reveal .slide-number,html:not(.print-pdf) .reveal .state-background{display:none!important}html:not(.print-pdf) .reveal li,html:not(.print-pdf) .reveal p,html:not(.print-pdf) .reveal td{font-size:20pt!important;color:#000}html:not(.print-pdf) .reveal h1,html:not(.print-pdf) .reveal h2,html:not(.print-pdf) .reveal h3,html:not(.print-pdf) .reveal h4,html:not(.print-pdf) .reveal h5,html:not(.print-pdf) .reveal h6{color:#000!important;height:auto;line-height:normal;text-align:left;letter-spacing:normal}html:not(.print-pdf) .reveal h1{font-size:28pt!important}html:not(.print-pdf) .reveal h2{font-size:24pt!important}html:not(.print-pdf) .reveal h3{font-size:22pt!important}html:not(.print-pdf) .reveal h4{font-size:22pt!important;font-variant:small-caps}html:not(.print-pdf) .reveal h5{font-size:21pt!important}html:not(.print-pdf) .reveal h6{font-size:20pt!important;font-style:italic}html:not(.print-pdf) .reveal a:link,html:not(.print-pdf) .reveal a:visited{color:#000!important;font-weight:700;text-decoration:underline}html:not(.print-pdf) .reveal div,html:not(.print-pdf) .reveal ol,html:not(.print-pdf) .reveal p,html:not(.print-pdf) .reveal ul{visibility:visible;position:static;width:auto;height:auto;display:block;overflow:visible;margin:0;text-align:left!important}html:not(.print-pdf) .reveal pre,html:not(.print-pdf) .reveal table{margin-left:0;margin-right:0}html:not(.print-pdf) .reveal pre code{padding:20px}html:not(.print-pdf) .reveal blockquote{margin:20px 0}html:not(.print-pdf) .reveal .slides{position:static!important;width:auto!important;height:auto!important;left:0!important;top:0!important;margin-left:0!important;margin-top:0!important;padding:0!important;zoom:1!important;transform:none!important;overflow:visible!important;display:block!important;text-align:left!important;perspective:none;perspective-origin:50% 50%}html:not(.print-pdf) .reveal .slides section{visibility:visible!important;position:static!important;width:auto!important;height:auto!important;display:block!important;overflow:visible!important;left:0!important;top:0!important;margin-left:0!important;margin-top:0!important;padding:60px 20px!important;z-index:auto!important;opacity:1!important;page-break-after:always!important;transform-style:flat!important;transform:none!important;transition:none!important}html:not(.print-pdf) .reveal .slides section.stack{padding:0!important}html:not(.print-pdf) .reveal .slides section:last-of-type{page-break-after:avoid!important}html:not(.print-pdf) .reveal .slides section .fragment{opacity:1!important;visibility:visible!important;transform:none!important}html:not(.print-pdf) .reveal .r-fit-text{white-space:normal!important}html:not(.print-pdf) .reveal section img{display:block;margin:15px 0;background:#fff;border:1px solid #666;box-shadow:none}html:not(.print-pdf) .reveal section small{font-size:.8em}html:not(.print-pdf) .reveal .hljs{max-height:100%;white-space:pre-wrap;word-wrap:break-word;word-break:break-word;font-size:15pt}html:not(.print-pdf) .reveal .hljs .hljs-ln-numbers{white-space:nowrap}html:not(.print-pdf) .reveal .hljs td{font-size:inherit!important;color:inherit!important}}</style></head>
+  <body>
+    <!-- splash: pure CSS, paints before the bundle parses; main.ts dismisses it -->
+    <div id="bento-splash" aria-hidden="true">
+      <div class="bs-mark"><i class="bs-a"></i><i class="bs-b"></i><i class="bs-c"></i></div>
+      <div class="bs-word"><b>Bento</b>/Slides</div>
+      <div class="bs-bar"><i></i></div>
+    </div><div data-bento-preview="1"><div style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:2147483000;overflow:hidden;background:#0E223A"><style>._0{font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif}._1{position:absolute}._2{overflow-wrap:break-word}._3{justify-content: center}._4{flex-direction: column}._5{line-height: 1.15}._6{width: 100%}._7{opacity: 1}._8{display: flex}._9{color: rgb(255, 255, 255)}._a{text-align: left}._b{position: absolute}._c{overflow: visible}._d{height: 100%}._e{text-align: center}._f{font-weight: 700}._g{font-weight: 800}._h{inset: 0px}._i{width: 900px}._j{left: 1305px}._k{width: 180px}._l{left: 90px}._m{left: 95px}._n{top: 205px}</style><div style="left:50%;top:50%;width:1600px;height:900px;transform:translate(-50%,-50%);transform:translate(-50%,-50%) scale(calc(min(100vw, 177.78vh) / 1600px))" class="_1"><div class="bento-slide" data-slide-id="slide-10" style="position:relative;overflow:hidden;width: 1600px; height: 900px; background: rgb(14, 34, 58);"><div class="bento-el bento-el-text _1 _l _i _7 _8 _4 _3" style="top: 70px;height: 35px"><div class="bento-text-inner _2 _0 _f _a _5 _6" dir="auto" style="font-size: 18px;color: rgb(242, 138, 112)">PROJET NOSQL • BIG DATA</div></div><div class="bento-el bento-el-text _1 _l _7 _8 _4 _3" style="top: 190px;width: 920px;height: 130px"><div class="bento-text-inner _2 _f _9 _a _5 _6" dir="auto" style="font-size: 92px;font-family: Georgia, -apple-system, BlinkMacSystemFont, &quot;Segoe UI&quot;, Roboto, &quot;Helvetica Neue&quot;, Arial, sans-serif">MusicPulse</div></div><div class="bento-el bento-el-text _1 _m _7 _8 _4 _3" style="top: 350px;width: 770px;height: 110px"><div class="bento-text-inner _2 _0 _a _5 _6" dir="auto" style="font-size: 34px;font-weight: 600;color: rgb(216, 225, 238)">Firebase pour durer.<br>Redis pour accélérer.</div></div><div class="bento-el bento-el-text _1 _m _i _7 _8 _4 _3" style="top: 720px;height: 42px"><div class="bento-text-inner _2 _0 _9 _a _5 _6" dir="auto" style="font-size: 22px;font-weight: 500">Philippe Maillot • Erwan Marchand • Evan Afonso</div></div><div class="bento-el bento-el-shape _1 _n _7" style="left: 1160px;width: 120px;height: 400px"><svg viewBox="0 0 120 400" preserveAspectRatio="none" class="_b _h _6 _d _c"><rect x="0" y="0" width="120" height="400" rx="16" fill="#6F88AD"></rect></svg></div><div class="bento-el bento-el-shape _1 _j _n _k _7" style="height: 170px"><svg viewBox="0 0 180 170" preserveAspectRatio="none" class="_b _h _6 _d _c"><rect x="0" y="0" width="180" height="170" rx="18" fill="#F28A70"></rect></svg></div><div class="bento-el bento-el-shape _1 _j _k _7" style="top: 400px;height: 205px"><svg viewBox="0 0 180 205" preserveAspectRatio="none" class="_b _h _6 _d _c"><rect x="0" y="0" width="180" height="205" rx="18" fill="#F7F3EA"></rect></svg></div><div class="bento-el bento-el-text _1 _7 _8 _4 _3" style="left: 1185px;top: 315px;width: 70px;height: 70px"><div class="bento-text-inner _2 _0 _g _9 _e _5 _6" dir="auto" style="font-size: 44px">F</div></div><div class="bento-el bento-el-text _1 _7 _8 _4 _3" style="left: 1355px;top: 440px;width: 80px;height: 80px"><div class="bento-text-inner _2 _0 _g _e _5 _6" dir="auto" style="font-size: 48px;color: rgb(20, 36, 58)">R</div></div></div></div></div></div><script data-bento-preview="1">(function(){var a=document.querySelectorAll('[data-bento-preview]');for(var i=a.length;i--;){var n=a[i];if(n.parentNode)n.parentNode.removeChild(n)}})()</script>
+    <style>
+#bento-splash{position:fixed;inset:0;z-index:9999;display:grid;place-content:center;justify-items:center;gap:26px;background:radial-gradient(130% 90% at 50% 38%,#1c2c44 0%,#101c2c 58%,#0a1220 100%);pointer-events:none;transition:opacity .5s ease;animation:bsAuto .6s ease 9s both}
+#bento-splash.done{opacity:0}
+.bs-mark{position:relative;width:104px;height:104px;border-radius:24px;background:#16273e;box-shadow:0 0 56px rgba(255,238,214,.26),0 10px 34px rgba(0,0,0,.55);overflow:hidden;animation:bsIn .7s cubic-bezier(.22,1.4,.36,1) both,bsFloat 3.4s ease-in-out .9s infinite}
+.bs-mark i{position:absolute;border-radius:9px;opacity:0;animation:bsTile .55s cubic-bezier(.25,1.5,.45,1) both}
+.bs-b{left:12px;top:12px;width:24px;height:80px;background:#5e7699;animation-delay:.18s}
+.bs-a{right:12px;top:12px;width:50px;height:37px;background:#ff9e8a;animation-delay:.3s}
+.bs-c{right:12px;bottom:12px;width:50px;height:37px;background:#f0ebe0;animation-delay:.42s}
+.bs-mark:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 38%,rgba(255,255,255,.35) 50%,transparent 62%);transform:translateX(-130%);animation:bsSheen 1s ease 1.05s both}
+.bs-word{font:600 15px/1 -apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#e8edf4;letter-spacing:.42em;text-transform:uppercase;text-indent:.42em;animation:bsUp .6s ease .55s both}
+.bs-word b{color:#ff9e8a;font-weight:800}
+.bs-bar{width:124px;height:2px;border-radius:1px;background:rgba(255,255,255,.13);overflow:hidden;animation:bsUp .5s ease .85s both}
+.bs-bar i{display:block;width:44%;height:100%;border-radius:1px;background:linear-gradient(90deg,#ff9e8a,#ffbca8);animation:bsScan 1.1s cubic-bezier(.45,0,.55,1) 1s infinite alternate}
+@keyframes bsIn{from{transform:scale(.55) rotate(-8deg);opacity:0}}
+@keyframes bsTile{from{transform:translateY(28px) scale(.6);opacity:0}to{transform:none;opacity:1}}
+@keyframes bsSheen{to{transform:translateX(130%)}}
+@keyframes bsFloat{50%{transform:translateY(-5px)}}
+@keyframes bsUp{from{opacity:0;transform:translateY(10px)}}
+@keyframes bsScan{from{transform:translateX(-30%)}to{transform:translateX(210%)}}
+@keyframes bsAuto{to{opacity:0;visibility:hidden}}
+@media (prefers-reduced-motion:reduce){#bento-splash,#bento-splash *,.bs-mark:after{animation-duration:.01ms;animation-delay:0ms;animation-iteration-count:1}}
+    </style>
+    <div id="app"></div>
+    <script>
+    (() => {
+      const source = document.getElementById('bento-doc');
+      const deck = JSON.parse(source.textContent);
+      const W = deck.size?.width || 1600;
+      const H = deck.size?.height || 900;
+      let index = Math.max(0, Math.min(deck.slides.length - 1,
+        Number.parseInt(location.hash.slice(1), 10) - 1 || 0));
+
+      document.title = `${deck.title} — présentation`;
+      document.body.innerHTML = '';
+      document.body.className = 'mp-body';
+
+      const style = document.createElement('style');
+      style.textContent = `
+        html,body{width:100%;height:100%;margin:0;background:#071525;overflow:hidden;font-family:Segoe UI,Arial,sans-serif}
+        *{box-sizing:border-box}
+        .mp-body{color:#fff;user-select:none}
+        .mp-shell{position:fixed;inset:0;display:grid;place-items:center;background:#071525}
+        .mp-stage{position:relative;width:${W}px;height:${H}px;transform-origin:center center;box-shadow:0 30px 80px #0009;background:#fff;overflow:hidden}
+        .mp-el{position:absolute;box-sizing:border-box}
+        .mp-text{display:flex;overflow:hidden;overflow-wrap:break-word}
+        .mp-text-inner{width:100%;overflow-wrap:break-word}
+        .mp-controls{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:999px;background:#071525dd;box-shadow:0 8px 28px #0007;z-index:10;transition:opacity .2s}
+        .mp-controls button{border:1px solid #ffffff38;background:#ffffff12;color:#fff;border-radius:999px;padding:8px 13px;font-size:15px;cursor:pointer}
+        .mp-controls button:hover{background:#ffffff28}
+        .mp-count{min-width:72px;text-align:center;font-weight:700;font-size:14px}
+        .mp-progress{position:fixed;left:0;bottom:0;height:4px;background:#F28A70;transition:width .2s;z-index:12}
+        .mp-help{position:fixed;right:18px;bottom:20px;color:#cbd6e5;font-size:13px;background:#071525cc;padding:8px 12px;border-radius:10px;z-index:10}
+        .mp-notes{position:fixed;right:18px;top:18px;width:min(430px,42vw);max-height:70vh;overflow:auto;background:#071525f2;border:1px solid #ffffff30;border-radius:16px;padding:20px;z-index:20;white-space:pre-wrap;line-height:1.5;box-shadow:0 18px 60px #0008;display:none;user-select:text}
+        .mp-notes.open{display:block}
+        .mp-notes strong{display:block;color:#F28A70;margin-bottom:10px}
+        @media (max-width:900px){.mp-help{display:none}.mp-controls{bottom:10px}.mp-notes{width:calc(100vw - 36px);max-height:55vh}}
+        @media print{
+          @page{size:landscape;margin:0}
+          html,body{overflow:visible;background:#fff}
+          .mp-shell,.mp-controls,.mp-progress,.mp-help,.mp-notes{display:none!important}
+          .mp-print{display:block!important}
+          .mp-print-slide{position:relative;width:${W}px;height:${H}px;overflow:hidden;page-break-after:always;break-after:page;transform-origin:top left}
+        }
+      `;
+      document.head.appendChild(style);
+
+      const shell = document.createElement('main');
+      shell.className = 'mp-shell';
+      const stage = document.createElement('section');
+      stage.className = 'mp-stage';
+      shell.appendChild(stage);
+
+      const controls = document.createElement('nav');
+      controls.className = 'mp-controls';
+      controls.innerHTML = '<button data-action="prev" title="Diapositive précédente">←</button><span class="mp-count"></span><button data-action="next" title="Diapositive suivante">→</button><button data-action="notes" title="Notes de l’orateur">Notes</button><button data-action="full" title="Plein écran">⛶</button><button data-action="print" title="Imprimer ou exporter en PDF">PDF</button>';
+      const progress = document.createElement('div');
+      progress.className = 'mp-progress';
+      const help = document.createElement('div');
+      help.className = 'mp-help';
+      help.textContent = '← → naviguer · N notes · F plein écran';
+      const notes = document.createElement('aside');
+      notes.className = 'mp-notes';
+      const printRoot = document.createElement('div');
+      printRoot.className = 'mp-print';
+      printRoot.style.display = 'none';
+      document.body.append(shell, controls, progress, help, notes, printRoot);
+
+      function renderElement(el) {
+        const node = document.createElement('div');
+        node.className = `mp-el mp-${el.type}`;
+        Object.assign(node.style, {
+          left: `${el.x}px`, top: `${el.y}px`, width: `${el.w}px`, height: `${el.h}px`,
+          opacity: el.opacity ?? 1,
+          transform: el.rotation ? `rotate(${el.rotation}deg)` : '',
+          transformOrigin: 'center center'
+        });
+        if (el.type === 'shape') {
+          node.style.background = el.fill || 'transparent';
+          node.style.borderRadius = `${el.radius || 0}px`;
+          if (el.stroke && el.stroke !== 'transparent' && (el.strokeWidth || 0) > 0) {
+            node.style.border = `${el.strokeWidth}px solid ${el.stroke}`;
+          }
+        } else if (el.type === 'text') {
+          node.style.alignItems = el.valign === 'top' ? 'flex-start' : el.valign === 'bottom' ? 'flex-end' : 'center';
+          const inner = document.createElement('div');
+          inner.className = 'mp-text-inner';
+          inner.innerHTML = el.html || '';
+          Object.assign(inner.style, {
+            fontSize: `${el.fontSize || 32}px`, fontFamily: el.fontFamily || 'Segoe UI',
+            fontWeight: el.fontWeight || 400, color: el.color || '#14243A',
+            textAlign: el.align || 'left', lineHeight: el.lineHeight || 1.2,
+            letterSpacing: el.letterSpacing ? `${el.letterSpacing}px` : ''
+          });
+          node.appendChild(inner);
+        } else if (el.type === 'image') {
+          const img = document.createElement('img');
+          img.src = el.src;
+          img.alt = '';
+          Object.assign(img.style, {width:'100%',height:'100%',objectFit:el.fit || 'contain',borderRadius:`${el.radius || 0}px`});
+          node.appendChild(img);
+        }
+        return node;
+      }
+
+      function fillSlide(container, slide) {
+        container.style.background = slide.background || deck.theme?.background || '#fff';
+        container.replaceChildren(...(slide.elements || []).map(renderElement));
+      }
+
+      function fit() {
+        const scale = Math.min(innerWidth / W, innerHeight / H);
+        stage.style.transform = `scale(${scale})`;
+      }
+
+      function show(next) {
+        index = Math.max(0, Math.min(deck.slides.length - 1, next));
+        const slide = deck.slides[index];
+        fillSlide(stage, slide);
+        controls.querySelector('.mp-count').textContent = `${index + 1} / ${deck.slides.length}`;
+        progress.style.width = `${((index + 1) / deck.slides.length) * 100}%`;
+        notes.innerHTML = `<strong>Notes — diapositive ${index + 1}</strong>${slide.notes || 'Aucune note.'}`;
+        history.replaceState(null, '', `#${index + 1}`);
+      }
+
+      function buildPrintPages() {
+        printRoot.replaceChildren();
+        deck.slides.forEach(slide => {
+          const page = document.createElement('section');
+          page.className = 'mp-print-slide';
+          fillSlide(page, slide);
+          printRoot.appendChild(page);
+        });
+      }
+
+      controls.addEventListener('click', event => {
+        const action = event.target.closest('button')?.dataset.action;
+        if (action === 'prev') show(index - 1);
+        if (action === 'next') show(index + 1);
+        if (action === 'notes') notes.classList.toggle('open');
+        if (action === 'full') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+        if (action === 'print') { buildPrintPages(); print(); }
+      });
+      addEventListener('keydown', event => {
+        if (['ArrowRight','PageDown',' '].includes(event.key)) { event.preventDefault(); show(index + 1); }
+        else if (['ArrowLeft','PageUp'].includes(event.key)) { event.preventDefault(); show(index - 1); }
+        else if (event.key === 'Home') show(0);
+        else if (event.key === 'End') show(deck.slides.length - 1);
+        else if (event.key.toLowerCase() === 'n') notes.classList.toggle('open');
+        else if (event.key.toLowerCase() === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+        else if (event.key === 'Escape') notes.classList.remove('open');
+      });
+      addEventListener('resize', fit);
+      shell.addEventListener('click', event => {
+        if (event.target === shell) show(event.clientX < innerWidth / 2 ? index - 1 : index + 1);
+      });
+      fit();
+      show(index);
+    })();
+    </script>
+  
+
+</body></html>

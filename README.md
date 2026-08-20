@@ -259,8 +259,10 @@ Ces analyses donnent du sens à la démonstration, mais restent secondaires par 
 pytest
 ```
 
-## Livrables restant à relier
+## Livrables
 
-- URL du dépôt GitHub : à compléter après publication ;
-- URL Trello et répartition des tâches : à fournir par l'équipe ;
-- support de présentation : à créer après validation des analyses finales.
+- dépôt GitHub : [PhilippeMaillot/musicpulse](https://github.com/PhilippeMaillot/musicpulse) ;
+- présentation autonome : [MusicPulse — Firebase & Redis](docs/presentation/MusicPulse_Firebase_Redis_standalone.html) ;
+- URL Trello et répartition des tâches : à fournir par l'équipe.
+
+La présentation est un fichier HTML autonome : téléchargez-le puis ouvrez-le directement dans un navigateur, sans serveur ni installation.
