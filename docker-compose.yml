@@ -1,0 +1,17 @@
+services:
+  redis:
+    image: redis:7.4-alpine
+    command: redis-server --appendonly yes --requirepass musicpulse-dev
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-a", "musicpulse-dev", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  redis_data:
+

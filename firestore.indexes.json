@@ -1,0 +1,22 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "tracks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "primary_genre", "order": "ASCENDING"},
+        {"fieldPath": "year", "order": "DESCENDING"}
+      ]
+    },
+    {
+      "collectionGroup": "tracks",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {"fieldPath": "artist_normalized", "order": "ASCENDING"},
+        {"fieldPath": "name_normalized", "order": "ASCENDING"}
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
+

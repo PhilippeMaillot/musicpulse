@@ -1,0 +1,16 @@
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.streamlit/secrets.toml
+firebase-service-account.json
+firebase-debug.log
+data/raw/
+backups/*.jsonl
+.DS_Store
+Thumbs.db
