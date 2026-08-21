@@ -39,9 +39,17 @@ class FirestoreMusicRepository:
         return snapshot.to_dict() if snapshot.exists else None
 
     def update_track(self, track_id: str, changes: dict[str, Any]) -> None:
-        forbidden = {"track_id"}
-        cleaned = {key: value for key, value in changes.items() if key not in forbidden}
-        self.client.collection("tracks").document(track_id).update(cleaned)
+        reference = self.client.collection("tracks").document(track_id)
+        snapshot = reference.get()
+        if not snapshot.exists:
+            raise ValueError(f"Le morceau {track_id} n'existe pas")
+
+        # Repartir du document complet permet de recalculer les champs
+        # dénormalisés (primary_genre, name_normalized, artist_normalized).
+        merged = {**snapshot.to_dict(), **changes, "track_id": track_id}
+        normalized = normalize_track(merged)
+        normalized.pop("track_id", None)
+        reference.update(normalized)
 
     def delete_track(self, track_id: str) -> None:
         self.client.collection("tracks").document(track_id).delete()
@@ -60,4 +68,3 @@ class FirestoreMusicRepository:
         if count % batch_size:
             batch.commit()
         return count
-

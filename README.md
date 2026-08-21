@@ -201,7 +201,7 @@ python scripts/seed_redis.py --tracks "CHEMIN\Music Info.csv" --history "CHEMIN\
 - Update : modification des métadonnées, notes et playlists.
 - Delete : suppression d'un morceau ou d'un élément de playlist.
 
-La classe `FirestoreMusicRepository` centralise les opérations sur les morceaux. L'écran Administration en expose une partie dans la WebApp.
+La classe `FirestoreMusicRepository` centralise les opérations sur les morceaux. L'onglet **CRUD Firestore** expose l'ajout, la mise à jour et la suppression ; la lecture est démontrée dans l'onglet **Démo live**.
 
 Chaque modification durable est réalisée dans Firestore. Les clés Redis liées au document doivent ensuite être invalidées afin de ne pas servir une ancienne version.
 
@@ -262,6 +262,7 @@ pytest
 ## Livrables
 
 - dépôt GitHub : [PhilippeMaillot/musicpulse](https://github.com/PhilippeMaillot/musicpulse) ;
+- notebook de démarche : [exploration, nettoyage, ETL, requêtes et graphiques](notebooks/exploration_musicpulse.ipynb) ;
 - présentation autonome : [MusicPulse — Firebase & Redis](docs/presentation/MusicPulse_Firebase_Redis_standalone.html) ;
 - URL Trello et répartition des tâches : à fournir par l'équipe.
 

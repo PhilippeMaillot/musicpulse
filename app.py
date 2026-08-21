@@ -157,7 +157,64 @@ with admin:
             except Exception as exc:
                 st.error(str(exc))
 
-    delete_id = st.text_input("Identifiant à supprimer")
+    st.markdown("#### Modifier un morceau")
+    st.caption(
+        "Renseignez uniquement les champs à modifier. La mise à jour recalcule "
+        "les champs dénormalisés puis invalide le cache Redis du morceau."
+    )
+    with st.form("update_track"):
+        update_id = st.text_input(
+            "Identifiant du morceau à modifier", key="update_track_id"
+        ).strip()
+        update_name = st.text_input("Nouveau titre", key="update_track_name").strip()
+        update_artist = st.text_input(
+            "Nouvel artiste", key="update_track_artist"
+        ).strip()
+        update_genre = st.text_input(
+            "Nouveau genre", key="update_track_genre"
+        ).strip()
+        update_year = st.number_input(
+            "Nouvelle année (0 = ne pas modifier)",
+            min_value=0,
+            max_value=2100,
+            value=0,
+            key="update_track_year",
+        )
+        update_submitted = st.form_submit_button(
+            "Mettre à jour dans Firestore", disabled=not settings.connected
+        )
+        if update_submitted:
+            changes = {
+                key: value
+                for key, value in {
+                    "name": update_name,
+                    "artist": update_artist,
+                    "genre": update_genre,
+                    "year": int(update_year) if update_year else None,
+                }.items()
+                if value not in (None, "")
+            }
+            try:
+                if not update_id:
+                    raise ValueError("L'identifiant du morceau est obligatoire.")
+                if not changes:
+                    raise ValueError("Renseignez au moins un champ à modifier.")
+                repository = FirestoreMusicRepository(
+                    settings.firebase_project_id, settings.firebase_credentials
+                )
+                repository.update_track(update_id, changes)
+                redis_service = RedisMusicService(
+                    settings.redis_url, settings.cache_ttl_seconds
+                )
+                redis_service.invalidate_track_cache(update_id)
+                st.success(
+                    "Morceau mis à jour dans Firestore et cache Redis invalidé."
+                )
+            except Exception as exc:
+                st.error(str(exc))
+
+    st.markdown("#### Supprimer un morceau")
+    delete_id = st.text_input("Identifiant à supprimer", key="delete_track_id")
     if st.button("Supprimer", disabled=not settings.connected, type="secondary"):
         try:
             repository = FirestoreMusicRepository(settings.firebase_project_id, settings.firebase_credentials)
